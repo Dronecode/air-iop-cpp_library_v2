@@ -9,7 +9,16 @@ namespace msg {
 /**
  * @brief COMPONENT_INFORMATION message
  *
- * Information about a component. For camera components instead use CAMERA_INFORMATION, and for autopilots additionally use AUTOPILOT_VERSION. Components including GCSes should consider supporting requests of this message via MAV_CMD_REQUEST_MESSAGE.
+ * 
+        Component information message, which may be requested using MAV_CMD_REQUEST_MESSAGE.
+        
+        This contains MAVLink FTP URIs for the component's general and peripherals metadata files along with their CRCs (which can be used for file caching).
+        The files must be hosted on the component, and may be xz compressed.
+        The general metadata file can be read to get the locations of additional metadata files (COMP_METADATA_TYPE), which may be hosted either on the vehicle or the Internet.
+        For more information see: https://mavlink.io/en/services/component_information.html.
+        
+        Note: Camera components should use CAMERA_INFORMATION instead, and autopilots may use both this message and AUTOPILOT_VERSION.
+      
  */
 struct COMPONENT_INFORMATION : mavlink::Message {
     static constexpr msgid_t MSG_ID = 395;
@@ -20,10 +29,10 @@ struct COMPONENT_INFORMATION : mavlink::Message {
 
 
     uint32_t time_boot_ms; /*< [ms] Timestamp (time since system boot). */
-    uint32_t general_metadata_file_crc; /*<  CRC32 of the TYPE_GENERAL file (can be used by a GCS for file caching). The general metadata file contains URLs to other files of different type according to COMP_METADATA_TYPE. */
-    std::array<char, 100> general_metadata_uri; /*<  Component definition URI for TYPE_GENERAL. This must be a MAVLink FTP URI and the file might be compressed with xz. */
-    uint32_t peripherals_metadata_file_crc; /*<  CRC32 of the TYPE_PERIPHERALS file (can be used by a GCS for file caching). */
-    std::array<char, 100> peripherals_metadata_uri; /*<  (Optional) Component definition URI for TYPE_PERIPHERALS. This must be a MAVLink FTP URI and the file might be compressed with xz. Peripherals are listed as a separate URL and not included in the general metadata file because it will likely be generated at runtime while the general (and other referenced files) might be generated at compile time. */
+    uint32_t general_metadata_file_crc; /*<  CRC32 of the general metadata file (general_metadata_uri). */
+    std::array<char, 100> general_metadata_uri; /*<  MAVLink FTP URI for the general metadata file (COMP_METADATA_TYPE_GENERAL), which may be compressed with xz. The file contains general component metadata, and may contain URI links for additional metadata (see COMP_METADATA_TYPE). The information is static from boot, and may be generated at compile time. */
+    uint32_t peripherals_metadata_file_crc; /*<  CRC32 of peripherals metadata file (peripherals_metadata_uri). */
+    std::array<char, 100> peripherals_metadata_uri; /*<  (Optional) MAVLink FTP URI for the peripherals metadata file (COMP_METADATA_TYPE_PERIPHERALS), which may be compressed with xz. This contains data about "attached components" such as UAVCAN nodes. The peripherals are in a separate file because the information must be generated dynamically at runtime. */
 
 
     inline std::string get_name(void) const override

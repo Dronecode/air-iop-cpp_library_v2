@@ -522,7 +522,7 @@ constexpr auto WIFI_CONFIG_AP_MODE_ENUM_END = 4;
 /** @brief Supported component metadata types. These are used in the "general" metadata file returned by COMPONENT_INFORMATION to provide information about supported metadata types. The types are not used directly in MAVLink messages. */
 enum class COMP_METADATA_TYPE
 {
-    GENERAL=0, /* General information about the component. General metadata includes information about other COMP_METADATA_TYPEs supported by the component. This type must be supported and must be downloadable from vehicle. | */
+    GENERAL=0, /* General information about the component. General metadata includes information about other metadata types supported by the component. Files of this type must be supported, and must be downloadable from vehicle using a MAVLink FTP URI. | */
     PARAMETER=1, /* Parameter meta data. | */
     COMMANDS=2, /* Meta data that specifies which commands and command parameters the vehicle supports. (WIP) | */
     PERIPHERALS=3, /* Meta data that specifies external non-MAVLink peripherals. | */
@@ -867,14 +867,14 @@ enum class MAV_PROTOCOL_CAPABILITY : uint64_t
           Note that this flag must always be set if missions are supported, because missions must always use MISSION_ITEM_INT (rather than MISSION_ITEM, which is deprecated).
          | */
     COMMAND_INT=8, /* Autopilot supports COMMAND_INT scaled integer message type. | */
-    RESERVED1=16, /* Reserved for future use. | */
-    FTP=32, /* Autopilot supports the new FILE_TRANSFER_PROTOCOL message type. | */
+    PARAM_UNION=16, /* Autopilot supports the new param union message type. | */
+    FTP=32, /* Autopilot supports the File Transfer Protocol v1: https://mavlink.io/en/services/ftp.html. | */
     SET_ATTITUDE_TARGET=64, /* Autopilot supports commanding attitude offboard. | */
     SET_POSITION_TARGET_LOCAL_NED=128, /* Autopilot supports commanding position and velocity targets in local NED frame. | */
     SET_POSITION_TARGET_GLOBAL_INT=256, /* Autopilot supports commanding position and velocity targets in global scaled integers. | */
     TERRAIN=512, /* Autopilot supports terrain protocol / data handling. | */
     SET_ACTUATOR_TARGET=1024, /* Autopilot supports direct actuator control. | */
-    FLIGHT_TERMINATION=2048, /* Autopilot supports the flight termination command. | */
+    FLIGHT_TERMINATION=2048, /* Autopilot supports the MAV_CMD_DO_FLIGHTTERMINATION command (flight termination). | */
     COMPASS_CALIBRATION=4096, /* Autopilot supports onboard compass calibration. | */
     MAVLINK2=8192, /* Autopilot supports MAVLink version 2. | */
     MISSION_FENCE=16384, /* Autopilot supports mission fence protocol. | */
