@@ -9,7 +9,7 @@ namespace msg {
 /**
  * @brief OPEN_DRONE_ID_MESSAGE_PACK message
  *
- * An OpenDroneID message pack is a container for multiple encoded OpenDroneID messages (i.e. not in the format given for the above messages descriptions but after encoding into the compressed OpenDroneID byte format). Used e.g. when transmitting on Bluetooth 5.0 Long Range/Extended Advertising or on WiFi Neighbor Aware Networking.
+ * An OpenDroneID message pack is a container for multiple encoded OpenDroneID messages (i.e. not in the format given for the above message descriptions but after encoding into the compressed OpenDroneID byte format). Used e.g. when transmitting on Bluetooth 5.0 Long Range/Extended Advertising or on WiFi Neighbor Aware Networking or on WiFi Beacon.
  */
 struct OPEN_DRONE_ID_MESSAGE_PACK : mavlink::Message {
     static constexpr msgid_t MSG_ID = 12915;

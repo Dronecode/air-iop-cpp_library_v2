@@ -17473,6 +17473,73 @@ TEST(common_interop, COMPONENT_INFORMATION)
 }
 #endif
 
+TEST(common, COMPONENT_METADATA)
+{
+    mavlink::mavlink_message_t msg;
+    mavlink::MsgMap map1(msg);
+    mavlink::MsgMap map2(msg);
+
+    mavlink::common::msg::COMPONENT_METADATA packet_in{};
+    packet_in.time_boot_ms = 963497464;
+    packet_in.file_crc = 963497672;
+    packet_in.uri = to_char_array("IJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABC");
+
+    mavlink::common::msg::COMPONENT_METADATA packet1{};
+    mavlink::common::msg::COMPONENT_METADATA packet2{};
+
+    packet1 = packet_in;
+
+    //std::cout << packet1.to_yaml() << std::endl;
+
+    packet1.serialize(map1);
+
+    mavlink::mavlink_finalize_message(&msg, 1, 1, packet1.MIN_LENGTH, packet1.LENGTH, packet1.CRC_EXTRA);
+
+    packet2.deserialize(map2);
+
+    EXPECT_EQ(packet1.time_boot_ms, packet2.time_boot_ms);
+    EXPECT_EQ(packet1.file_crc, packet2.file_crc);
+    EXPECT_EQ(packet1.uri, packet2.uri);
+}
+
+#ifdef TEST_INTEROP
+TEST(common_interop, COMPONENT_METADATA)
+{
+    mavlink_message_t msg;
+
+    // to get nice print
+    memset(&msg, 0, sizeof(msg));
+
+    mavlink_component_metadata_t packet_c {
+         963497464, 963497672, "IJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABC"
+    };
+
+    mavlink::common::msg::COMPONENT_METADATA packet_in{};
+    packet_in.time_boot_ms = 963497464;
+    packet_in.file_crc = 963497672;
+    packet_in.uri = to_char_array("IJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABC");
+
+    mavlink::common::msg::COMPONENT_METADATA packet2{};
+
+    mavlink_msg_component_metadata_encode(1, 1, &msg, &packet_c);
+
+    // simulate message-handling callback
+    [&packet2](const mavlink_message_t *cmsg) {
+        MsgMap map2(cmsg);
+
+        packet2.deserialize(map2);
+    } (&msg);
+
+    EXPECT_EQ(packet_in.time_boot_ms, packet2.time_boot_ms);
+    EXPECT_EQ(packet_in.file_crc, packet2.file_crc);
+    EXPECT_EQ(packet_in.uri, packet2.uri);
+
+#ifdef PRINT_MSG
+    PRINT_MSG(msg);
+#endif
+}
+#endif
+
 TEST(common, PLAY_TUNE_V2)
 {
     mavlink::mavlink_message_t msg;
@@ -18598,20 +18665,21 @@ TEST(common, OPEN_DRONE_ID_SYSTEM)
     mavlink::MsgMap map2(msg);
 
     mavlink::common::msg::OPEN_DRONE_ID_SYSTEM packet_in{};
-    packet_in.target_system = 77;
-    packet_in.target_component = 144;
-    packet_in.id_or_mac = {{ 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230 }};
-    packet_in.operator_location_type = 15;
-    packet_in.classification_type = 82;
+    packet_in.target_system = 89;
+    packet_in.target_component = 156;
+    packet_in.id_or_mac = {{ 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242 }};
+    packet_in.operator_location_type = 27;
+    packet_in.classification_type = 94;
     packet_in.operator_latitude = 963497464;
     packet_in.operator_longitude = 963497672;
-    packet_in.area_count = 18275;
-    packet_in.area_radius = 18379;
+    packet_in.area_count = 18483;
+    packet_in.area_radius = 18587;
     packet_in.area_ceiling = 73.0;
     packet_in.area_floor = 101.0;
-    packet_in.category_eu = 149;
-    packet_in.class_eu = 216;
+    packet_in.category_eu = 161;
+    packet_in.class_eu = 228;
     packet_in.operator_altitude_geo = 129.0;
+    packet_in.timestamp = 963498504;
 
     mavlink::common::msg::OPEN_DRONE_ID_SYSTEM packet1{};
     mavlink::common::msg::OPEN_DRONE_ID_SYSTEM packet2{};
@@ -18640,6 +18708,7 @@ TEST(common, OPEN_DRONE_ID_SYSTEM)
     EXPECT_EQ(packet1.category_eu, packet2.category_eu);
     EXPECT_EQ(packet1.class_eu, packet2.class_eu);
     EXPECT_EQ(packet1.operator_altitude_geo, packet2.operator_altitude_geo);
+    EXPECT_EQ(packet1.timestamp, packet2.timestamp);
 }
 
 #ifdef TEST_INTEROP
@@ -18651,24 +18720,25 @@ TEST(common_interop, OPEN_DRONE_ID_SYSTEM)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_open_drone_id_system_t packet_c {
-         963497464, 963497672, 73.0, 101.0, 129.0, 18275, 18379, 77, 144, { 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230 }, 15, 82, 149, 216
+         963497464, 963497672, 73.0, 101.0, 129.0, 963498504, 18483, 18587, 89, 156, { 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242 }, 27, 94, 161, 228
     };
 
     mavlink::common::msg::OPEN_DRONE_ID_SYSTEM packet_in{};
-    packet_in.target_system = 77;
-    packet_in.target_component = 144;
-    packet_in.id_or_mac = {{ 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230 }};
-    packet_in.operator_location_type = 15;
-    packet_in.classification_type = 82;
+    packet_in.target_system = 89;
+    packet_in.target_component = 156;
+    packet_in.id_or_mac = {{ 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242 }};
+    packet_in.operator_location_type = 27;
+    packet_in.classification_type = 94;
     packet_in.operator_latitude = 963497464;
     packet_in.operator_longitude = 963497672;
-    packet_in.area_count = 18275;
-    packet_in.area_radius = 18379;
+    packet_in.area_count = 18483;
+    packet_in.area_radius = 18587;
     packet_in.area_ceiling = 73.0;
     packet_in.area_floor = 101.0;
-    packet_in.category_eu = 149;
-    packet_in.class_eu = 216;
+    packet_in.category_eu = 161;
+    packet_in.class_eu = 228;
     packet_in.operator_altitude_geo = 129.0;
+    packet_in.timestamp = 963498504;
 
     mavlink::common::msg::OPEN_DRONE_ID_SYSTEM packet2{};
 
@@ -18695,6 +18765,7 @@ TEST(common_interop, OPEN_DRONE_ID_SYSTEM)
     EXPECT_EQ(packet_in.category_eu, packet2.category_eu);
     EXPECT_EQ(packet_in.class_eu, packet2.class_eu);
     EXPECT_EQ(packet_in.operator_altitude_geo, packet2.operator_altitude_geo);
+    EXPECT_EQ(packet_in.timestamp, packet2.timestamp);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);

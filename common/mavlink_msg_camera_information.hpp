@@ -31,7 +31,7 @@ struct CAMERA_INFORMATION : mavlink::Message {
     uint8_t lens_id; /*<  Reserved for a lens ID */
     uint32_t flags; /*<  Bitmap of camera capability flags. */
     uint16_t cam_definition_version; /*<  Camera definition version (iteration) */
-    std::array<char, 140> cam_definition_uri; /*<  Camera definition URI (if any, otherwise only basic functions will be available). HTTP- (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both must be supported by any GCS that implements the Camera Protocol). The definition file may be xz compressed, which will be indicated by the file extension .xml.xz (a GCS that implements the protocol must support decompressing the file). */
+    std::array<char, 140> cam_definition_uri; /*<  Camera definition URI (if any, otherwise only basic functions will be available). HTTP- (http://) and MAVLink FTP- (mavlinkftp://) formatted URIs are allowed (and both must be supported by any GCS that implements the Camera Protocol). The definition file may be xz compressed, which will be indicated by the file extension .xml.xz (a GCS that implements the protocol must support decompressing the file). The string needs to be zero terminated. */
 
 
     inline std::string get_name(void) const override

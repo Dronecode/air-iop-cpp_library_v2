@@ -81,11 +81,11 @@ enum class MAV_TYPE : uint8_t
     FLAPPING_WING=16, /* Flapping wing | */
     KITE=17, /* Kite | */
     ONBOARD_CONTROLLER=18, /* Onboard companion controller | */
-    VTOL_DUOROTOR=19, /* Two-rotor VTOL using control surfaces in vertical operation in addition. Tailsitter. | */
-    VTOL_QUADROTOR=20, /* Quad-rotor VTOL using a V-shaped quad config in vertical operation. Tailsitter. | */
-    VTOL_TILTROTOR=21, /* Tiltrotor VTOL | */
-    VTOL_RESERVED2=22, /* VTOL reserved 2 | */
-    VTOL_RESERVED3=23, /* VTOL reserved 3 | */
+    VTOL_TAILSITTER_DUOROTOR=19, /* Two-rotor Tailsitter VTOL that additionally uses control surfaces in vertical operation. Note, value previously named MAV_TYPE_VTOL_DUOROTOR. | */
+    VTOL_TAILSITTER_QUADROTOR=20, /* Quad-rotor Tailsitter VTOL using a V-shaped quad config in vertical operation. Note: value previously named MAV_TYPE_VTOL_QUADROTOR. | */
+    VTOL_TILTROTOR=21, /* Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to tilt (some) rotors to provide thrust in cruise flight. | */
+    VTOL_FIXEDROTOR=22, /* VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay (nominally) horizontal in all flight phases. | */
+    VTOL_TAILSITTER=23, /* Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or MAV_TYPE_VTOL_QUADROTOR if appropriate. | */
     VTOL_RESERVED4=24, /* VTOL reserved 4 | */
     VTOL_RESERVED5=25, /* VTOL reserved 5 | */
     GIMBAL=26, /* Gimbal | */
