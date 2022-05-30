@@ -390,6 +390,93 @@ TEST(development_interop, WIFI_NETWORK_INFO)
 }
 #endif
 
+TEST(development, FIGURE_EIGHT_EXECUTION_STATUS)
+{
+    mavlink::mavlink_message_t msg;
+    mavlink::MsgMap map1(msg);
+    mavlink::MsgMap map2(msg);
+
+    mavlink::development::msg::FIGURE_EIGHT_EXECUTION_STATUS packet_in{};
+    packet_in.time_usec = 93372036854775807ULL;
+    packet_in.major_radius = 73.0;
+    packet_in.minor_radius = 101.0;
+    packet_in.orientation = 129.0;
+    packet_in.frame = 101;
+    packet_in.x = 963498504;
+    packet_in.y = 963498712;
+    packet_in.z = 213.0;
+
+    mavlink::development::msg::FIGURE_EIGHT_EXECUTION_STATUS packet1{};
+    mavlink::development::msg::FIGURE_EIGHT_EXECUTION_STATUS packet2{};
+
+    packet1 = packet_in;
+
+    //std::cout << packet1.to_yaml() << std::endl;
+
+    packet1.serialize(map1);
+
+    mavlink::mavlink_finalize_message(&msg, 1, 1, packet1.MIN_LENGTH, packet1.LENGTH, packet1.CRC_EXTRA);
+
+    packet2.deserialize(map2);
+
+    EXPECT_EQ(packet1.time_usec, packet2.time_usec);
+    EXPECT_EQ(packet1.major_radius, packet2.major_radius);
+    EXPECT_EQ(packet1.minor_radius, packet2.minor_radius);
+    EXPECT_EQ(packet1.orientation, packet2.orientation);
+    EXPECT_EQ(packet1.frame, packet2.frame);
+    EXPECT_EQ(packet1.x, packet2.x);
+    EXPECT_EQ(packet1.y, packet2.y);
+    EXPECT_EQ(packet1.z, packet2.z);
+}
+
+#ifdef TEST_INTEROP
+TEST(development_interop, FIGURE_EIGHT_EXECUTION_STATUS)
+{
+    mavlink_message_t msg;
+
+    // to get nice print
+    memset(&msg, 0, sizeof(msg));
+
+    mavlink_figure_eight_execution_status_t packet_c {
+         93372036854775807ULL, 73.0, 101.0, 129.0, 963498504, 963498712, 213.0, 101
+    };
+
+    mavlink::development::msg::FIGURE_EIGHT_EXECUTION_STATUS packet_in{};
+    packet_in.time_usec = 93372036854775807ULL;
+    packet_in.major_radius = 73.0;
+    packet_in.minor_radius = 101.0;
+    packet_in.orientation = 129.0;
+    packet_in.frame = 101;
+    packet_in.x = 963498504;
+    packet_in.y = 963498712;
+    packet_in.z = 213.0;
+
+    mavlink::development::msg::FIGURE_EIGHT_EXECUTION_STATUS packet2{};
+
+    mavlink_msg_figure_eight_execution_status_encode(1, 1, &msg, &packet_c);
+
+    // simulate message-handling callback
+    [&packet2](const mavlink_message_t *cmsg) {
+        MsgMap map2(cmsg);
+
+        packet2.deserialize(map2);
+    } (&msg);
+
+    EXPECT_EQ(packet_in.time_usec, packet2.time_usec);
+    EXPECT_EQ(packet_in.major_radius, packet2.major_radius);
+    EXPECT_EQ(packet_in.minor_radius, packet2.minor_radius);
+    EXPECT_EQ(packet_in.orientation, packet2.orientation);
+    EXPECT_EQ(packet_in.frame, packet2.frame);
+    EXPECT_EQ(packet_in.x, packet2.x);
+    EXPECT_EQ(packet_in.y, packet2.y);
+    EXPECT_EQ(packet_in.z, packet2.z);
+
+#ifdef PRINT_MSG
+    PRINT_MSG(msg);
+#endif
+}
+#endif
+
 TEST(development, COMPONENT_INFORMATION_BASIC)
 {
     mavlink::mavlink_message_t msg;

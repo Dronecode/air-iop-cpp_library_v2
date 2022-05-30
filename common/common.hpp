@@ -167,10 +167,16 @@ enum class MAV_FRAME : uint8_t
     GLOBAL=0, /* Global (WGS84) coordinate frame + MSL altitude. First value / x: latitude, second value / y: longitude, third value / z: positive altitude over mean sea level (MSL). | */
     LOCAL_NED=1, /* NED local tangent frame (x: North, y: East, z: Down) with origin fixed relative to earth. | */
     MISSION=2, /* NOT a coordinate frame, indicates a mission command. | */
-    GLOBAL_RELATIVE_ALT=3, /* Global (WGS84) coordinate frame + altitude relative to the home position. First value / x: latitude, second value / y: longitude, third value / z: positive altitude with 0 being at the altitude of the home location. | */
+    GLOBAL_RELATIVE_ALT=3, /* 
+          Global (WGS84) coordinate frame + altitude relative to the home position.
+          First value / x: latitude, second value / y: longitude, third value / z: positive altitude with 0 being at the altitude of the home position.
+         | */
     LOCAL_ENU=4, /* ENU local tangent frame (x: East, y: North, z: Up) with origin fixed relative to earth. | */
     GLOBAL_INT=5, /* Global (WGS84) coordinate frame (scaled) + MSL altitude. First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude over mean sea level (MSL). | */
-    GLOBAL_RELATIVE_ALT_INT=6, /* Global (WGS84) coordinate frame (scaled) + altitude relative to the home position. First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude with 0 being at the altitude of the home location. | */
+    GLOBAL_RELATIVE_ALT_INT=6, /* 
+          Global (WGS84) coordinate frame (scaled) + altitude relative to the home position.
+          First value / x: latitude in degrees*1E7, second value / y: longitude in degrees*1E7, third value / z: positive altitude with 0 being at the altitude of the home position.
+         | */
     LOCAL_OFFSET_NED=7, /* NED local tangent frame (x: North, y: East, z: Down) with origin that travels with the vehicle. | */
     BODY_NED=8, /* Same as MAV_FRAME_LOCAL_NED when used to represent position values. Same as MAV_FRAME_BODY_FRD when used with velocity/accelaration values. | */
     BODY_OFFSET_NED=9, /* This is the same as MAV_FRAME_BODY_FRD. | */
@@ -253,7 +259,7 @@ enum class MAV_MOUNT_MODE
     RC_TARGETING=3, /* Load neutral position and start RC Roll,Pitch,Yaw control with stabilization | */
     GPS_POINT=4, /* Load neutral position and start to point to Lat,Lon,Alt | */
     SYSID_TARGET=5, /* Gimbal tracks system with specified system ID | */
-    HOME_LOCATION=6, /* Gimbal tracks home location | */
+    HOME_LOCATION=6, /* Gimbal tracks home position | */
 };
 
 //! MAV_MOUNT_MODE ENUM_END
