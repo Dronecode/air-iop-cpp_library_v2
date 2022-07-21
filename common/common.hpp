@@ -892,40 +892,6 @@ enum class MAV_SENSOR_ORIENTATION : uint8_t
 //! MAV_SENSOR_ORIENTATION ENUM_END
 constexpr auto MAV_SENSOR_ORIENTATION_ENUM_END = 101;
 
-/** @brief Bitmask of (optional) autopilot capabilities (64 bit). If a bit is set, the autopilot supports this capability. */
-enum class MAV_PROTOCOL_CAPABILITY : uint64_t
-{
-    MISSION_FLOAT=1, /* Autopilot supports the MISSION_ITEM float message type.
-          Note that MISSION_ITEM is deprecated, and autopilots should use MISSION_INT instead.
-         | */
-    PARAM_FLOAT=2, /* Autopilot supports the new param float message type. | */
-    MISSION_INT=4, /* Autopilot supports MISSION_ITEM_INT scaled integer message type.
-          Note that this flag must always be set if missions are supported, because missions must always use MISSION_ITEM_INT (rather than MISSION_ITEM, which is deprecated).
-         | */
-    COMMAND_INT=8, /* Autopilot supports COMMAND_INT scaled integer message type. | */
-    PARAM_ENCODE_BYTEWISE=16, /* Parameter protocol uses byte-wise encoding of parameter values into param_value (float) fields: https://mavlink.io/en/services/parameter.html#parameter-encoding.
-          Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE should be set if the parameter protocol is supported.
-         | */
-    FTP=32, /* Autopilot supports the File Transfer Protocol v1: https://mavlink.io/en/services/ftp.html. | */
-    SET_ATTITUDE_TARGET=64, /* Autopilot supports commanding attitude offboard. | */
-    SET_POSITION_TARGET_LOCAL_NED=128, /* Autopilot supports commanding position and velocity targets in local NED frame. | */
-    SET_POSITION_TARGET_GLOBAL_INT=256, /* Autopilot supports commanding position and velocity targets in global scaled integers. | */
-    TERRAIN=512, /* Autopilot supports terrain protocol / data handling. | */
-    SET_ACTUATOR_TARGET=1024, /* Autopilot supports direct actuator control. | */
-    FLIGHT_TERMINATION=2048, /* Autopilot supports the MAV_CMD_DO_FLIGHTTERMINATION command (flight termination). | */
-    COMPASS_CALIBRATION=4096, /* Autopilot supports onboard compass calibration. | */
-    MAVLINK2=8192, /* Autopilot supports MAVLink version 2. | */
-    MISSION_FENCE=16384, /* Autopilot supports mission fence protocol. | */
-    MISSION_RALLY=32768, /* Autopilot supports mission rally point protocol. | */
-    RESERVED2=65536, /* Reserved for future use. | */
-    PARAM_ENCODE_C_CAST=131072, /* Parameter protocol uses C-cast of parameter values to set the param_value (float) fields: https://mavlink.io/en/services/parameter.html#parameter-encoding.
-          Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE should be set if the parameter protocol is supported.
-         | */
-};
-
-//! MAV_PROTOCOL_CAPABILITY ENUM_END
-constexpr auto MAV_PROTOCOL_CAPABILITY_ENUM_END = 131073;
-
 /** @brief Type of mission items being requested/sent in mission protocol. */
 enum class MAV_MISSION_TYPE : uint8_t
 {

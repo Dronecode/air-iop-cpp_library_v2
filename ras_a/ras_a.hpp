@@ -30,6 +30,75 @@ constexpr auto MAVLINK_VERSION = 0;
 // ENUM DEFINITIONS
 
 
+/** @brief Micro air vehicle / autopilot classes. This identifies the individual model. */
+enum class MAV_AUTOPILOT
+{
+    GENERIC=0, /* Generic autopilot, full support for everything | */
+    RESERVED=1, /* Reserved for future use. | */
+    SLUGS=2, /* SLUGS autopilot, http://slugsuav.soe.ucsc.edu | */
+    ARDUPILOTMEGA=3, /* ArduPilot - Plane/Copter/Rover/Sub/Tracker, https://ardupilot.org | */
+    OPENPILOT=4, /* OpenPilot, http://openpilot.org | */
+    GENERIC_WAYPOINTS_ONLY=5, /* Generic autopilot only supporting simple waypoints | */
+    GENERIC_WAYPOINTS_AND_SIMPLE_NAVIGATION_ONLY=6, /* Generic autopilot supporting waypoints and other simple navigation commands | */
+    GENERIC_MISSION_FULL=7, /* Generic autopilot supporting the full mission command set | */
+    INVALID=8, /* No valid autopilot, e.g. a GCS or other MAVLink component | */
+    PPZ=9, /* PPZ UAV - http://nongnu.org/paparazzi | */
+    UDB=10, /* UAV Dev Board | */
+    FP=11, /* FlexiPilot | */
+    PX4=12, /* PX4 Autopilot - http://px4.io/ | */
+    SMACCMPILOT=13, /* SMACCMPilot - http://smaccmpilot.org | */
+    AUTOQUAD=14, /* AutoQuad -- http://autoquad.org | */
+    ARMAZILA=15, /* Armazila -- http://armazila.com | */
+    AEROB=16, /* Aerob -- http://aerob.ru | */
+    ASLUAV=17, /* ASLUAV autopilot -- http://www.asl.ethz.ch | */
+    SMARTAP=18, /* SmartAP Autopilot - http://sky-drones.com | */
+    AIRRAILS=19, /* AirRails - http://uaventure.com | */
+    REFLEX=20, /* Fusion Reflex - https://fusion.engineering | */
+    SKYDIO=21, /* Skydio - https://www.skydio.com/ | */
+    SHIELD_AI=22, /* Shield AI - https://shield.ai/ | */
+};
+
+//! MAV_AUTOPILOT ENUM_END
+constexpr auto MAV_AUTOPILOT_ENUM_END = 23;
+
+/** @brief Bitmask of (optional) autopilot capabilities (64 bit). If a bit is set, the autopilot supports this capability. */
+enum class MAV_PROTOCOL_CAPABILITY
+{
+    MISSION_FLOAT=1, /* Autopilot supports the MISSION_ITEM float message type.
+          Note that MISSION_ITEM is deprecated, and autopilots should use MISSION_INT instead.
+         | */
+    PARAM_FLOAT=2, /* Autopilot supports the new param float message type. | */
+    MISSION_INT=4, /* Autopilot supports MISSION_ITEM_INT scaled integer message type.
+          Note that this flag must always be set if missions are supported, because missions must always use MISSION_ITEM_INT (rather than MISSION_ITEM, which is deprecated).
+         | */
+    COMMAND_INT=8, /* Autopilot supports COMMAND_INT scaled integer message type. | */
+    PARAM_ENCODE_BYTEWISE=16, /* Parameter protocol uses byte-wise encoding of parameter values into param_value (float) fields: https://mavlink.io/en/services/parameter.html#parameter-encoding.
+          Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE should be set if the parameter protocol is supported.
+         | */
+    FTP=32, /* Autopilot supports the File Transfer Protocol v1: https://mavlink.io/en/services/ftp.html. | */
+    SET_ATTITUDE_TARGET=64, /* Autopilot supports commanding attitude offboard. | */
+    SET_POSITION_TARGET_LOCAL_NED=128, /* Autopilot supports commanding position and velocity targets in local NED frame. | */
+    SET_POSITION_TARGET_GLOBAL_INT=256, /* Autopilot supports commanding position and velocity targets in global scaled integers. | */
+    TERRAIN=512, /* Autopilot supports terrain protocol / data handling. | */
+    SET_ACTUATOR_TARGET=1024, /* Autopilot supports direct actuator control. | */
+    FLIGHT_TERMINATION=2048, /* Autopilot supports the MAV_CMD_DO_FLIGHTTERMINATION command (flight termination). | */
+    COMPASS_CALIBRATION=4096, /* Autopilot supports onboard compass calibration. | */
+    MAVLINK2=8192, /* Autopilot supports MAVLink version 2. | */
+    MISSION_FENCE=16384, /* Autopilot supports mission fence protocol. | */
+    MISSION_RALLY=32768, /* Autopilot supports mission rally point protocol. | */
+    RESERVED2=65536, /* Reserved for future use. | */
+    PARAM_ENCODE_C_CAST=131072, /* Parameter protocol uses C-cast of parameter values to set the param_value (float) fields: https://mavlink.io/en/services/parameter.html#parameter-encoding.
+          Note that either this flag or MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE should be set if the parameter protocol is supported.
+         | */
+    INDOOR_OBSTACLE_AVOIDANCE=262144, /* Autopilot is capable of indoor obstacle avoidance. The obstacle visualization range (i.e. omnidirectional or single direction) is not determined by this flag and is system specific. | */
+    OUTDOOR_OBSTACLE_AVOIDANCE=524288, /* Autopilot is capable of outdoor obstacle avoidance. The obstacle visualization range (i.e. omnidirectional or single direction) is not determined by this flag and is system specific. | */
+    VIO_AUTONOMOUS_NAVIGATION=1048576, /* Autopilot is capable of autonomous navigation using Visual-Inertial Odometry algorithms and/or subsystems. | */
+    AUTONOMOUS_EXPLORATION=2097152, /* Autopilot is capable of autonomous exploration tasks in indoor/outdoor environments. This necessarily means that the vehicle is capable of autonomous navigation and obstacle avoidance. | */
+};
+
+//! MAV_PROTOCOL_CAPABILITY ENUM_END
+constexpr auto MAV_PROTOCOL_CAPABILITY_ENUM_END = 2097153;
+
 /** @brief Commands to be executed by the MAV. They can be executed on user request, or as part of a mission script. If the action is used in a mission, the parameter mapping to the waypoint/mission message is as follows: Param 1, Param 2, Param 3, Param 4, X: Param 5, Y:Param 6, Z:Param 7. This command list is similar what ARINC 424 is for commercial aircraft: A data format how to interpret waypoint/mission data. NaN and INT32_MAX may be used in float/integer params (respectively) to indicate optional/default values (e.g. to use the component's current yaw or latitude rather than a specific value). See https://mavlink.io/en/guide/xml_schema.html#MAV_CMD for information about the structure of the MAV_CMD entries */
 enum class MAV_CMD
 {

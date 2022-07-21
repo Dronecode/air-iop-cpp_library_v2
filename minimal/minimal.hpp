@@ -30,35 +30,6 @@ constexpr auto MAVLINK_VERSION = 3;
 // ENUM DEFINITIONS
 
 
-/** @brief Micro air vehicle / autopilot classes. This identifies the individual model. */
-enum class MAV_AUTOPILOT : uint8_t
-{
-    GENERIC=0, /* Generic autopilot, full support for everything | */
-    RESERVED=1, /* Reserved for future use. | */
-    SLUGS=2, /* SLUGS autopilot, http://slugsuav.soe.ucsc.edu | */
-    ARDUPILOTMEGA=3, /* ArduPilot - Plane/Copter/Rover/Sub/Tracker, https://ardupilot.org | */
-    OPENPILOT=4, /* OpenPilot, http://openpilot.org | */
-    GENERIC_WAYPOINTS_ONLY=5, /* Generic autopilot only supporting simple waypoints | */
-    GENERIC_WAYPOINTS_AND_SIMPLE_NAVIGATION_ONLY=6, /* Generic autopilot supporting waypoints and other simple navigation commands | */
-    GENERIC_MISSION_FULL=7, /* Generic autopilot supporting the full mission command set | */
-    INVALID=8, /* No valid autopilot, e.g. a GCS or other MAVLink component | */
-    PPZ=9, /* PPZ UAV - http://nongnu.org/paparazzi | */
-    UDB=10, /* UAV Dev Board | */
-    FP=11, /* FlexiPilot | */
-    PX4=12, /* PX4 Autopilot - http://px4.io/ | */
-    SMACCMPILOT=13, /* SMACCMPilot - http://smaccmpilot.org | */
-    AUTOQUAD=14, /* AutoQuad -- http://autoquad.org | */
-    ARMAZILA=15, /* Armazila -- http://armazila.com | */
-    AEROB=16, /* Aerob -- http://aerob.ru | */
-    ASLUAV=17, /* ASLUAV autopilot -- http://www.asl.ethz.ch | */
-    SMARTAP=18, /* SmartAP Autopilot - http://sky-drones.com | */
-    AIRRAILS=19, /* AirRails - http://uaventure.com | */
-    REFLEX=20, /* Fusion Reflex - https://fusion.engineering | */
-};
-
-//! MAV_AUTOPILOT ENUM_END
-constexpr auto MAV_AUTOPILOT_ENUM_END = 21;
-
 /** @brief MAVLINK component type reported in HEARTBEAT message. Flight controllers must report the type of the vehicle on which they are mounted (e.g. MAV_TYPE_OCTOROTOR). All other components must report a value appropriate for their type (e.g. a camera must use MAV_TYPE_CAMERA). */
 enum class MAV_TYPE : uint8_t
 {
