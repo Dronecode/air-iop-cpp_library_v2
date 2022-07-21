@@ -19,7 +19,7 @@ struct RADIO_STATUS : mavlink::Message {
     static constexpr auto NAME = "RADIO_STATUS";
 
 
-    uint8_t rssi; /*<  Local (message sender) recieved signal strength indication in device-dependent units/scale. Values: [0-254], UINT8_MAX: invalid/unknown. */
+    uint8_t rssi; /*<  Local (message sender) received signal strength indication in device-dependent units/scale. Values: [0-254], UINT8_MAX: invalid/unknown. */
     uint8_t remrssi; /*<  Remote (message receiver) signal strength indication in device-dependent units/scale. Values: [0-254], UINT8_MAX: invalid/unknown. */
     uint8_t txbuf; /*< [%] Remaining free transmitter buffer space. */
     uint8_t noise; /*<  Local background noise level. These are device dependent RSSI values (scale as approx 2x dB on SiK radios). Values: [0-254], UINT8_MAX: invalid/unknown. */

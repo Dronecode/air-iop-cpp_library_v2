@@ -22,7 +22,7 @@ struct COMPONENT_INFORMATION_BASIC : mavlink::Message {
     uint32_t time_boot_ms; /*< [ms] Timestamp (time since system boot). */
     std::array<uint8_t, 32> vendor_name; /*<  Name of the component vendor */
     std::array<uint8_t, 32> model_name; /*<  Name of the component model */
-    std::array<char, 24> software_version; /*<  Sofware version. The version format can be custom, recommended is SEMVER 'major.minor.patch'. */
+    std::array<char, 24> software_version; /*<  Software version. The version format can be custom, recommended is SEMVER 'major.minor.patch'. */
     std::array<char, 24> hardware_version; /*<  Hardware version. The version format can be custom, recommended is SEMVER 'major.minor.patch'. */
     uint64_t capabilities; /*<  Component capability flags */
 

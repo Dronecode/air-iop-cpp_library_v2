@@ -10,7 +10,7 @@ namespace msg {
  * @brief HIL_GPS message
  *
  * The global position, as returned by the Global Positioning System (GPS). This is
-                 NOT the global position estimate of the sytem, but rather a RAW sensor value. See message GLOBAL_POSITION_INT for the global position estimate.
+                 NOT the global position estimate of the system, but rather a RAW sensor value. See message GLOBAL_POSITION_INT for the global position estimate.
  */
 struct HIL_GPS : mavlink::Message {
     static constexpr msgid_t MSG_ID = 113;

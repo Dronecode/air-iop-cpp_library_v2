@@ -22,7 +22,7 @@ struct MISSION_CHANGED : mavlink::Message {
     int16_t start_index; /*<  Start index for partial mission change (-1 for all items). */
     int16_t end_index; /*<  End index of a partial mission change. -1 is a synonym for the last mission item (i.e. selects all items from start_index). Ignore field if start_index=-1. */
     uint8_t origin_sysid; /*<  System ID of the author of the new mission. */
-    uint8_t origin_compid; /*<  Compnent ID of the author of the new mission. */
+    uint8_t origin_compid; /*<  Component ID of the author of the new mission. */
     uint8_t mission_type; /*<  Mission type. */
 
 

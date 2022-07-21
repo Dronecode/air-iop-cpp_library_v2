@@ -10607,6 +10607,7 @@ TEST(common, EFI_STATUS)
     packet_in.exhaust_gas_temperature = 381.0;
     packet_in.throttle_out = 409.0;
     packet_in.pt_compensation = 437.0;
+    packet_in.ignition_voltage = 472.0;
 
     mavlink::common::msg::EFI_STATUS packet1{};
     mavlink::common::msg::EFI_STATUS packet2{};
@@ -10638,6 +10639,7 @@ TEST(common, EFI_STATUS)
     EXPECT_EQ(packet1.exhaust_gas_temperature, packet2.exhaust_gas_temperature);
     EXPECT_EQ(packet1.throttle_out, packet2.throttle_out);
     EXPECT_EQ(packet1.pt_compensation, packet2.pt_compensation);
+    EXPECT_EQ(packet1.ignition_voltage, packet2.ignition_voltage);
 }
 
 #ifdef TEST_INTEROP
@@ -10649,7 +10651,7 @@ TEST(common_interop, EFI_STATUS)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_efi_status_t packet_c {
-         17.0, 45.0, 73.0, 101.0, 129.0, 157.0, 185.0, 213.0, 241.0, 269.0, 297.0, 325.0, 353.0, 381.0, 409.0, 437.0, 197
+         17.0, 45.0, 73.0, 101.0, 129.0, 157.0, 185.0, 213.0, 241.0, 269.0, 297.0, 325.0, 353.0, 381.0, 409.0, 437.0, 197, 472.0
     };
 
     mavlink::common::msg::EFI_STATUS packet_in{};
@@ -10670,6 +10672,7 @@ TEST(common_interop, EFI_STATUS)
     packet_in.exhaust_gas_temperature = 381.0;
     packet_in.throttle_out = 409.0;
     packet_in.pt_compensation = 437.0;
+    packet_in.ignition_voltage = 472.0;
 
     mavlink::common::msg::EFI_STATUS packet2{};
 
@@ -10699,6 +10702,7 @@ TEST(common_interop, EFI_STATUS)
     EXPECT_EQ(packet_in.exhaust_gas_temperature, packet2.exhaust_gas_temperature);
     EXPECT_EQ(packet_in.throttle_out, packet2.throttle_out);
     EXPECT_EQ(packet_in.pt_compensation, packet2.pt_compensation);
+    EXPECT_EQ(packet_in.ignition_voltage, packet2.ignition_voltage);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);
@@ -15855,6 +15859,7 @@ TEST(common, ODOMETRY)
     packet_in.velocity_covariance = {{ 1025.0, 1026.0, 1027.0, 1028.0, 1029.0, 1030.0, 1031.0, 1032.0, 1033.0, 1034.0, 1035.0, 1036.0, 1037.0, 1038.0, 1039.0, 1040.0, 1041.0, 1042.0, 1043.0, 1044.0, 1045.0 }};
     packet_in.reset_counter = 55;
     packet_in.estimator_type = 122;
+    packet_in.quality = -67;
 
     mavlink::common::msg::ODOMETRY packet1{};
     mavlink::common::msg::ODOMETRY packet2{};
@@ -15886,6 +15891,7 @@ TEST(common, ODOMETRY)
     EXPECT_EQ(packet1.velocity_covariance, packet2.velocity_covariance);
     EXPECT_EQ(packet1.reset_counter, packet2.reset_counter);
     EXPECT_EQ(packet1.estimator_type, packet2.estimator_type);
+    EXPECT_EQ(packet1.quality, packet2.quality);
 }
 
 #ifdef TEST_INTEROP
@@ -15897,7 +15903,7 @@ TEST(common_interop, ODOMETRY)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_odometry_t packet_c {
-         93372036854775807ULL, 73.0, 101.0, 129.0, { 157.0, 158.0, 159.0, 160.0 }, 269.0, 297.0, 325.0, 353.0, 381.0, 409.0, { 437.0, 438.0, 439.0, 440.0, 441.0, 442.0, 443.0, 444.0, 445.0, 446.0, 447.0, 448.0, 449.0, 450.0, 451.0, 452.0, 453.0, 454.0, 455.0, 456.0, 457.0 }, { 1025.0, 1026.0, 1027.0, 1028.0, 1029.0, 1030.0, 1031.0, 1032.0, 1033.0, 1034.0, 1035.0, 1036.0, 1037.0, 1038.0, 1039.0, 1040.0, 1041.0, 1042.0, 1043.0, 1044.0, 1045.0 }, 177, 244, 55, 122
+         93372036854775807ULL, 73.0, 101.0, 129.0, { 157.0, 158.0, 159.0, 160.0 }, 269.0, 297.0, 325.0, 353.0, 381.0, 409.0, { 437.0, 438.0, 439.0, 440.0, 441.0, 442.0, 443.0, 444.0, 445.0, 446.0, 447.0, 448.0, 449.0, 450.0, 451.0, 452.0, 453.0, 454.0, 455.0, 456.0, 457.0 }, { 1025.0, 1026.0, 1027.0, 1028.0, 1029.0, 1030.0, 1031.0, 1032.0, 1033.0, 1034.0, 1035.0, 1036.0, 1037.0, 1038.0, 1039.0, 1040.0, 1041.0, 1042.0, 1043.0, 1044.0, 1045.0 }, 177, 244, 55, 122, -67
     };
 
     mavlink::common::msg::ODOMETRY packet_in{};
@@ -15918,6 +15924,7 @@ TEST(common_interop, ODOMETRY)
     packet_in.velocity_covariance = {{ 1025.0, 1026.0, 1027.0, 1028.0, 1029.0, 1030.0, 1031.0, 1032.0, 1033.0, 1034.0, 1035.0, 1036.0, 1037.0, 1038.0, 1039.0, 1040.0, 1041.0, 1042.0, 1043.0, 1044.0, 1045.0 }};
     packet_in.reset_counter = 55;
     packet_in.estimator_type = 122;
+    packet_in.quality = -67;
 
     mavlink::common::msg::ODOMETRY packet2{};
 
@@ -15947,6 +15954,7 @@ TEST(common_interop, ODOMETRY)
     EXPECT_EQ(packet_in.velocity_covariance, packet2.velocity_covariance);
     EXPECT_EQ(packet_in.reset_counter, packet2.reset_counter);
     EXPECT_EQ(packet_in.estimator_type, packet2.estimator_type);
+    EXPECT_EQ(packet_in.quality, packet2.quality);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);

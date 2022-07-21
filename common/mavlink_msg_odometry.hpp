@@ -13,7 +13,7 @@ namespace msg {
  */
 struct ODOMETRY : mavlink::Message {
     static constexpr msgid_t MSG_ID = 331;
-    static constexpr size_t LENGTH = 232;
+    static constexpr size_t LENGTH = 233;
     static constexpr size_t MIN_LENGTH = 230;
     static constexpr uint8_t CRC_EXTRA = 91;
     static constexpr auto NAME = "ODOMETRY";
@@ -36,6 +36,7 @@ struct ODOMETRY : mavlink::Message {
     std::array<float, 21> velocity_covariance; /*<  Row-major representation of a 6x6 velocity cross-covariance matrix upper right triangle (states: vx, vy, vz, rollspeed, pitchspeed, yawspeed; first six entries are the first ROW, next five entries are the second ROW, etc.). If unknown, assign NaN value to first element in the array. */
     uint8_t reset_counter; /*<  Estimate reset counter. This should be incremented when the estimate resets in any of the dimensions (position, velocity, attitude, angular speed). This is designed to be used when e.g an external SLAM system detects a loop-closure and the estimate jumps. */
     uint8_t estimator_type; /*<  Type of estimator that is providing the odometry. */
+    int8_t quality; /*< [%] Optional odometry quality metric as a percentage. -1 = odometry has failed, 0 = unknown/unset quality, 1 = worst quality, 100 = best quality */
 
 
     inline std::string get_name(void) const override
@@ -70,6 +71,7 @@ struct ODOMETRY : mavlink::Message {
         ss << "  velocity_covariance: [" << to_string(velocity_covariance) << "]" << std::endl;
         ss << "  reset_counter: " << +reset_counter << std::endl;
         ss << "  estimator_type: " << +estimator_type << std::endl;
+        ss << "  quality: " << +quality << std::endl;
 
         return ss.str();
     }
@@ -95,6 +97,7 @@ struct ODOMETRY : mavlink::Message {
         map << child_frame_id;                // offset: 229
         map << reset_counter;                 // offset: 230
         map << estimator_type;                // offset: 231
+        map << quality;                       // offset: 232
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
@@ -116,6 +119,7 @@ struct ODOMETRY : mavlink::Message {
         map >> child_frame_id;                // offset: 229
         map >> reset_counter;                 // offset: 230
         map >> estimator_type;                // offset: 231
+        map >> quality;                       // offset: 232
     }
 };
 

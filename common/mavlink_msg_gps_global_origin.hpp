@@ -9,7 +9,7 @@ namespace msg {
 /**
  * @brief GPS_GLOBAL_ORIGIN message
  *
- * Publishes the GPS co-ordinates of the vehicle local origin (0,0,0) position. Emitted whenever a new GPS-Local position mapping is requested or set - e.g. following SET_GPS_GLOBAL_ORIGIN message.
+ * Publishes the GPS coordinates of the vehicle local origin (0,0,0) position. Emitted whenever a new GPS-Local position mapping is requested or set - e.g. following SET_GPS_GLOBAL_ORIGIN message.
  */
 struct GPS_GLOBAL_ORIGIN : mavlink::Message {
     static constexpr msgid_t MSG_ID = 49;
