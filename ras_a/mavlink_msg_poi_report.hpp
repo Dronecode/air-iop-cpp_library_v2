@@ -22,13 +22,13 @@ namespace msg {
  */
 struct POI_REPORT : mavlink::Message {
     static constexpr msgid_t MSG_ID = 238;
-    static constexpr size_t LENGTH = 219;
-    static constexpr size_t MIN_LENGTH = 219;
-    static constexpr uint8_t CRC_EXTRA = 72;
+    static constexpr size_t LENGTH = 215;
+    static constexpr size_t MIN_LENGTH = 215;
+    static constexpr uint8_t CRC_EXTRA = 166;
     static constexpr auto NAME = "POI_REPORT";
 
 
-    uint64_t uid; /*<  Unique ID for a given POI. Updates to a POIs information should use the same uid. 0 means unknown. */
+    uint32_t uid; /*<  Unique ID for a given POI. Updates to a POIs information should use the same uid. Maximum integer to use is 2,147,483,647 (for the purposes of type-safety when converting back and forth to floating-point fields). 0 means unknown. */
     uint32_t time_boot_ms; /*< [ms] Timestamp (time since system boot). */
     uint64_t time_utc_detected; /*< [ms] Timestamp (time since UNIX epoch) of the POI detection, in UTC. 0 for unknown. */
     uint64_t time_utc_updated; /*< [ms] Timestamp (time since UNIX epoch) of the last POI update, in UTC. 0 for unknown. */
@@ -121,78 +121,78 @@ struct POI_REPORT : mavlink::Message {
     {
         map.reset(MSG_ID, LENGTH);
 
-        map << uid;                           // offset: 0
-        map << time_utc_detected;             // offset: 8
-        map << time_utc_updated;              // offset: 16
-        map << time_boot_ms;                  // offset: 24
-        map << latitude;                      // offset: 28
-        map << longitude;                     // offset: 32
-        map << alt_msl;                       // offset: 36
-        map << alt_ellip;                     // offset: 40
-        map << alt_ground;                    // offset: 44
-        map << classification;                // offset: 48
-        map << x;                             // offset: 52
-        map << y;                             // offset: 56
-        map << z;                             // offset: 60
-        map << q;                             // offset: 64
-        map << dist;                          // offset: 80
-        map << vel_n;                         // offset: 84
-        map << vel_e;                         // offset: 88
-        map << vel_d;                         // offset: 92
-        map << hdg;                           // offset: 96
-        map << height;                        // offset: 100
-        map << width;                         // offset: 104
-        map << depth;                         // offset: 108
-        map << approach_vector_start;         // offset: 112
-        map << approach_vector_end;           // offset: 124
-        map << approach_velocity;             // offset: 136
-        map << ttl;                           // offset: 148
-        map << confidence_overall;            // offset: 150
-        map << confidence_detection;          // offset: 151
-        map << confidence_classification;     // offset: 152
-        map << confidence_localization;       // offset: 153
-        map << status_flags;                  // offset: 154
-        map << geometry;                      // offset: 155
-        map << name;                          // offset: 156
-        map << app6_symbol;                   // offset: 188
+        map << time_utc_detected;             // offset: 0
+        map << time_utc_updated;              // offset: 8
+        map << uid;                           // offset: 16
+        map << time_boot_ms;                  // offset: 20
+        map << latitude;                      // offset: 24
+        map << longitude;                     // offset: 28
+        map << alt_msl;                       // offset: 32
+        map << alt_ellip;                     // offset: 36
+        map << alt_ground;                    // offset: 40
+        map << classification;                // offset: 44
+        map << x;                             // offset: 48
+        map << y;                             // offset: 52
+        map << z;                             // offset: 56
+        map << q;                             // offset: 60
+        map << dist;                          // offset: 76
+        map << vel_n;                         // offset: 80
+        map << vel_e;                         // offset: 84
+        map << vel_d;                         // offset: 88
+        map << hdg;                           // offset: 92
+        map << height;                        // offset: 96
+        map << width;                         // offset: 100
+        map << depth;                         // offset: 104
+        map << approach_vector_start;         // offset: 108
+        map << approach_vector_end;           // offset: 120
+        map << approach_velocity;             // offset: 132
+        map << ttl;                           // offset: 144
+        map << confidence_overall;            // offset: 146
+        map << confidence_detection;          // offset: 147
+        map << confidence_classification;     // offset: 148
+        map << confidence_localization;       // offset: 149
+        map << status_flags;                  // offset: 150
+        map << geometry;                      // offset: 151
+        map << name;                          // offset: 152
+        map << app6_symbol;                   // offset: 184
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
     {
-        map >> uid;                           // offset: 0
-        map >> time_utc_detected;             // offset: 8
-        map >> time_utc_updated;              // offset: 16
-        map >> time_boot_ms;                  // offset: 24
-        map >> latitude;                      // offset: 28
-        map >> longitude;                     // offset: 32
-        map >> alt_msl;                       // offset: 36
-        map >> alt_ellip;                     // offset: 40
-        map >> alt_ground;                    // offset: 44
-        map >> classification;                // offset: 48
-        map >> x;                             // offset: 52
-        map >> y;                             // offset: 56
-        map >> z;                             // offset: 60
-        map >> q;                             // offset: 64
-        map >> dist;                          // offset: 80
-        map >> vel_n;                         // offset: 84
-        map >> vel_e;                         // offset: 88
-        map >> vel_d;                         // offset: 92
-        map >> hdg;                           // offset: 96
-        map >> height;                        // offset: 100
-        map >> width;                         // offset: 104
-        map >> depth;                         // offset: 108
-        map >> approach_vector_start;         // offset: 112
-        map >> approach_vector_end;           // offset: 124
-        map >> approach_velocity;             // offset: 136
-        map >> ttl;                           // offset: 148
-        map >> confidence_overall;            // offset: 150
-        map >> confidence_detection;          // offset: 151
-        map >> confidence_classification;     // offset: 152
-        map >> confidence_localization;       // offset: 153
-        map >> status_flags;                  // offset: 154
-        map >> geometry;                      // offset: 155
-        map >> name;                          // offset: 156
-        map >> app6_symbol;                   // offset: 188
+        map >> time_utc_detected;             // offset: 0
+        map >> time_utc_updated;              // offset: 8
+        map >> uid;                           // offset: 16
+        map >> time_boot_ms;                  // offset: 20
+        map >> latitude;                      // offset: 24
+        map >> longitude;                     // offset: 28
+        map >> alt_msl;                       // offset: 32
+        map >> alt_ellip;                     // offset: 36
+        map >> alt_ground;                    // offset: 40
+        map >> classification;                // offset: 44
+        map >> x;                             // offset: 48
+        map >> y;                             // offset: 52
+        map >> z;                             // offset: 56
+        map >> q;                             // offset: 60
+        map >> dist;                          // offset: 76
+        map >> vel_n;                         // offset: 80
+        map >> vel_e;                         // offset: 84
+        map >> vel_d;                         // offset: 88
+        map >> hdg;                           // offset: 92
+        map >> height;                        // offset: 96
+        map >> width;                         // offset: 100
+        map >> depth;                         // offset: 104
+        map >> approach_vector_start;         // offset: 108
+        map >> approach_vector_end;           // offset: 120
+        map >> approach_velocity;             // offset: 132
+        map >> ttl;                           // offset: 144
+        map >> confidence_overall;            // offset: 146
+        map >> confidence_detection;          // offset: 147
+        map >> confidence_classification;     // offset: 148
+        map >> confidence_localization;       // offset: 149
+        map >> status_flags;                  // offset: 150
+        map >> geometry;                      // offset: 151
+        map >> name;                          // offset: 152
+        map >> app6_symbol;                   // offset: 184
     }
 };
 
