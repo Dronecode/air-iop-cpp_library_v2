@@ -15,16 +15,16 @@ namespace msg {
         Detection time happens once for the same UID, while time of update changes when a specific metadata of that POI gets changed (e.g. position).
         The time of update should be changed on the sending system, based on the determined data in regards to that specific POI.
         So, POIs that are received again should be updated if the time of update has changed.
-        Note: The sending system should repeat the current POIs at a fixed default rate of at 2Hz to keep the protocol stateless.
+        Note: The sending system should repeat the current POIs at a max rate of 5Hz, in order to conserve bandwidth.
         The fixed rate though can be set by the receiver using MAV_CMD_SET_MESSAGE_INTERVAL, which is advised for POIs that are not static or for which
         the state updates are high - decision on the rates of some specific POIs is at the implementers consideration.
       
  */
 struct POI_REPORT : mavlink::Message {
     static constexpr msgid_t MSG_ID = 238;
-    static constexpr size_t LENGTH = 215;
-    static constexpr size_t MIN_LENGTH = 215;
-    static constexpr uint8_t CRC_EXTRA = 166;
+    static constexpr size_t LENGTH = 103;
+    static constexpr size_t MIN_LENGTH = 103;
+    static constexpr uint8_t CRC_EXTRA = 91;
     static constexpr auto NAME = "POI_REPORT";
 
 
@@ -53,15 +53,6 @@ struct POI_REPORT : mavlink::Message {
     float vel_e; /*< [m/s] East velocity of the POI. NAN if unknown. */
     float vel_d; /*< [m/s] Down velocity of the POI. NAN if unknown. */
     float hdg; /*< [rad] Heading of the POI in the NED frame. NAN if unknown. */
-    float height; /*< [m] Height of the POI shape. When the geometry is a circle, sphere or cylinder, represents the radius. NAN if unknown. */
-    float width; /*< [m] Width of the POI shape. NAN if unknown. */
-    float depth; /*< [m] Depth of the POI shape. NAN if unknown. */
-    uint8_t geometry; /*<  POI geometry type. */
-    std::array<float, 3> approach_vector_start; /*< [m] Recommended vector start point, in the NED frame, for vehicle approach to the POI. This can either be determined by the end system where the POI was detected or by a system forwarding the information to another vehicle. Unknown is NaN, NaN, NaN. */
-    std::array<float, 3> approach_vector_end; /*< [m] Recommended vector end point, in the NED frame, for vehicle approach to the POI. This can either be determined by the end system where the POI was detected or by a system forwarding the information to another vehicle. Unknown is NaN, NaN, NaN. */
-    std::array<float, 3> approach_velocity; /*< [m/s] Recommended NED velocity for vehicle approach to the POI. This can either be determined by the end system where the POI was detected ir by a system forwarding the information to another vehicle. Unknown is NaN, NaN, NaN. */
-    std::array<char, 32> name; /*<  Name of the POI, if the system provides one. NULL terminated string. */
-    std::array<char, 31> app6_symbol; /*<  APP-6(D) standard symbol 30-digit Symbol Identification Code (SIDC) that provides the necessary information to display a tactical symbol. The SIDC is formed with eleven elements which are presented in two sets of ten digits and an additional set of ten digits composed of three elements, which are optional. Any unspecified element should be set to '0'. The way these codes are built can be checked on the Annex A to the APP-6 - NATO Joint Military Symbology, version D. NULL terminated string. */
 
 
     inline std::string get_name(void) const override
@@ -104,15 +95,6 @@ struct POI_REPORT : mavlink::Message {
         ss << "  vel_e: " << vel_e << std::endl;
         ss << "  vel_d: " << vel_d << std::endl;
         ss << "  hdg: " << hdg << std::endl;
-        ss << "  height: " << height << std::endl;
-        ss << "  width: " << width << std::endl;
-        ss << "  depth: " << depth << std::endl;
-        ss << "  geometry: " << +geometry << std::endl;
-        ss << "  approach_vector_start: [" << to_string(approach_vector_start) << "]" << std::endl;
-        ss << "  approach_vector_end: [" << to_string(approach_vector_end) << "]" << std::endl;
-        ss << "  approach_velocity: [" << to_string(approach_velocity) << "]" << std::endl;
-        ss << "  name: \"" << to_string(name) << "\"" << std::endl;
-        ss << "  app6_symbol: \"" << to_string(app6_symbol) << "\"" << std::endl;
 
         return ss.str();
     }
@@ -140,21 +122,12 @@ struct POI_REPORT : mavlink::Message {
         map << vel_e;                         // offset: 84
         map << vel_d;                         // offset: 88
         map << hdg;                           // offset: 92
-        map << height;                        // offset: 96
-        map << width;                         // offset: 100
-        map << depth;                         // offset: 104
-        map << approach_vector_start;         // offset: 108
-        map << approach_vector_end;           // offset: 120
-        map << approach_velocity;             // offset: 132
-        map << ttl;                           // offset: 144
-        map << confidence_overall;            // offset: 146
-        map << confidence_detection;          // offset: 147
-        map << confidence_classification;     // offset: 148
-        map << confidence_localization;       // offset: 149
-        map << status_flags;                  // offset: 150
-        map << geometry;                      // offset: 151
-        map << name;                          // offset: 152
-        map << app6_symbol;                   // offset: 184
+        map << ttl;                           // offset: 96
+        map << confidence_overall;            // offset: 98
+        map << confidence_detection;          // offset: 99
+        map << confidence_classification;     // offset: 100
+        map << confidence_localization;       // offset: 101
+        map << status_flags;                  // offset: 102
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
@@ -178,21 +151,12 @@ struct POI_REPORT : mavlink::Message {
         map >> vel_e;                         // offset: 84
         map >> vel_d;                         // offset: 88
         map >> hdg;                           // offset: 92
-        map >> height;                        // offset: 96
-        map >> width;                         // offset: 100
-        map >> depth;                         // offset: 104
-        map >> approach_vector_start;         // offset: 108
-        map >> approach_vector_end;           // offset: 120
-        map >> approach_velocity;             // offset: 132
-        map >> ttl;                           // offset: 144
-        map >> confidence_overall;            // offset: 146
-        map >> confidence_detection;          // offset: 147
-        map >> confidence_classification;     // offset: 148
-        map >> confidence_localization;       // offset: 149
-        map >> status_flags;                  // offset: 150
-        map >> geometry;                      // offset: 151
-        map >> name;                          // offset: 152
-        map >> app6_symbol;                   // offset: 184
+        map >> ttl;                           // offset: 96
+        map >> confidence_overall;            // offset: 98
+        map >> confidence_detection;          // offset: 99
+        map >> confidence_classification;     // offset: 100
+        map >> confidence_localization;       // offset: 101
+        map >> status_flags;                  // offset: 102
     }
 };
 

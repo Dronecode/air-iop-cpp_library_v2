@@ -26,12 +26,12 @@ TEST(ras_a, POI_REPORT)
     packet_in.time_boot_ms = 963498504;
     packet_in.time_utc_detected = 93372036854775807ULL;
     packet_in.time_utc_updated = 93372036854776311ULL;
-    packet_in.confidence_overall = 59;
-    packet_in.confidence_detection = 126;
-    packet_in.confidence_classification = 193;
-    packet_in.confidence_localization = 4;
-    packet_in.ttl = 24723;
-    packet_in.status_flags = 71;
+    packet_in.confidence_overall = 171;
+    packet_in.confidence_detection = 238;
+    packet_in.confidence_classification = 49;
+    packet_in.confidence_localization = 116;
+    packet_in.ttl = 22227;
+    packet_in.status_flags = 183;
     packet_in.latitude = 963498712;
     packet_in.longitude = 963498920;
     packet_in.alt_msl = 241.0;
@@ -47,15 +47,6 @@ TEST(ras_a, POI_REPORT)
     packet_in.vel_e = 605.0;
     packet_in.vel_d = 633.0;
     packet_in.hdg = 661.0;
-    packet_in.height = 689.0;
-    packet_in.width = 717.0;
-    packet_in.depth = 745.0;
-    packet_in.geometry = 138;
-    packet_in.approach_vector_start = {{ 773.0, 774.0, 775.0 }};
-    packet_in.approach_vector_end = {{ 857.0, 858.0, 859.0 }};
-    packet_in.approach_velocity = {{ 941.0, 942.0, 943.0 }};
-    packet_in.name = to_char_array("WXYZABCDEFGHIJKLMNOPQRSTUVWXYZA");
-    packet_in.app6_symbol = to_char_array("CDEFGHIJKLMNOPQRSTUVWXYZABCDEF");
 
     mavlink::ras_a::msg::POI_REPORT packet1{};
     mavlink::ras_a::msg::POI_REPORT packet2{};
@@ -95,15 +86,6 @@ TEST(ras_a, POI_REPORT)
     EXPECT_EQ(packet1.vel_e, packet2.vel_e);
     EXPECT_EQ(packet1.vel_d, packet2.vel_d);
     EXPECT_EQ(packet1.hdg, packet2.hdg);
-    EXPECT_EQ(packet1.height, packet2.height);
-    EXPECT_EQ(packet1.width, packet2.width);
-    EXPECT_EQ(packet1.depth, packet2.depth);
-    EXPECT_EQ(packet1.geometry, packet2.geometry);
-    EXPECT_EQ(packet1.approach_vector_start, packet2.approach_vector_start);
-    EXPECT_EQ(packet1.approach_vector_end, packet2.approach_vector_end);
-    EXPECT_EQ(packet1.approach_velocity, packet2.approach_velocity);
-    EXPECT_EQ(packet1.name, packet2.name);
-    EXPECT_EQ(packet1.app6_symbol, packet2.app6_symbol);
 }
 
 #ifdef TEST_INTEROP
@@ -115,7 +97,7 @@ TEST(ras_a_interop, POI_REPORT)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_poi_report_t packet_c {
-         93372036854775807ULL, 93372036854776311ULL, 963498296, 963498504, 963498712, 963498920, 241.0, 269.0, 297.0, 963499752, 353.0, 381.0, 409.0, { 437.0, 438.0, 439.0, 440.0 }, 549.0, 577.0, 605.0, 633.0, 661.0, 689.0, 717.0, 745.0, { 773.0, 774.0, 775.0 }, { 857.0, 858.0, 859.0 }, { 941.0, 942.0, 943.0 }, 24723, 59, 126, 193, 4, 71, 138, "WXYZABCDEFGHIJKLMNOPQRSTUVWXYZA", "CDEFGHIJKLMNOPQRSTUVWXYZABCDEF"
+         93372036854775807ULL, 93372036854776311ULL, 963498296, 963498504, 963498712, 963498920, 241.0, 269.0, 297.0, 963499752, 353.0, 381.0, 409.0, { 437.0, 438.0, 439.0, 440.0 }, 549.0, 577.0, 605.0, 633.0, 661.0, 22227, 171, 238, 49, 116, 183
     };
 
     mavlink::ras_a::msg::POI_REPORT packet_in{};
@@ -123,12 +105,12 @@ TEST(ras_a_interop, POI_REPORT)
     packet_in.time_boot_ms = 963498504;
     packet_in.time_utc_detected = 93372036854775807ULL;
     packet_in.time_utc_updated = 93372036854776311ULL;
-    packet_in.confidence_overall = 59;
-    packet_in.confidence_detection = 126;
-    packet_in.confidence_classification = 193;
-    packet_in.confidence_localization = 4;
-    packet_in.ttl = 24723;
-    packet_in.status_flags = 71;
+    packet_in.confidence_overall = 171;
+    packet_in.confidence_detection = 238;
+    packet_in.confidence_classification = 49;
+    packet_in.confidence_localization = 116;
+    packet_in.ttl = 22227;
+    packet_in.status_flags = 183;
     packet_in.latitude = 963498712;
     packet_in.longitude = 963498920;
     packet_in.alt_msl = 241.0;
@@ -144,15 +126,6 @@ TEST(ras_a_interop, POI_REPORT)
     packet_in.vel_e = 605.0;
     packet_in.vel_d = 633.0;
     packet_in.hdg = 661.0;
-    packet_in.height = 689.0;
-    packet_in.width = 717.0;
-    packet_in.depth = 745.0;
-    packet_in.geometry = 138;
-    packet_in.approach_vector_start = {{ 773.0, 774.0, 775.0 }};
-    packet_in.approach_vector_end = {{ 857.0, 858.0, 859.0 }};
-    packet_in.approach_velocity = {{ 941.0, 942.0, 943.0 }};
-    packet_in.name = to_char_array("WXYZABCDEFGHIJKLMNOPQRSTUVWXYZA");
-    packet_in.app6_symbol = to_char_array("CDEFGHIJKLMNOPQRSTUVWXYZABCDEF");
 
     mavlink::ras_a::msg::POI_REPORT packet2{};
 
@@ -190,15 +163,6 @@ TEST(ras_a_interop, POI_REPORT)
     EXPECT_EQ(packet_in.vel_e, packet2.vel_e);
     EXPECT_EQ(packet_in.vel_d, packet2.vel_d);
     EXPECT_EQ(packet_in.hdg, packet2.hdg);
-    EXPECT_EQ(packet_in.height, packet2.height);
-    EXPECT_EQ(packet_in.width, packet2.width);
-    EXPECT_EQ(packet_in.depth, packet2.depth);
-    EXPECT_EQ(packet_in.geometry, packet2.geometry);
-    EXPECT_EQ(packet_in.approach_vector_start, packet2.approach_vector_start);
-    EXPECT_EQ(packet_in.approach_vector_end, packet2.approach_vector_end);
-    EXPECT_EQ(packet_in.approach_velocity, packet2.approach_velocity);
-    EXPECT_EQ(packet_in.name, packet2.name);
-    EXPECT_EQ(packet_in.app6_symbol, packet2.app6_symbol);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);
