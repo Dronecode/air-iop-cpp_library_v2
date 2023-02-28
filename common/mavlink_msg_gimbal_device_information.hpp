@@ -28,12 +28,12 @@ struct GIMBAL_DEVICE_INFORMATION : mavlink::Message {
     uint64_t uid; /*<  UID of gimbal hardware (0 if unknown). */
     uint16_t cap_flags; /*<  Bitmap of gimbal capability flags. */
     uint16_t custom_cap_flags; /*<  Bitmap for use for gimbal-specific capability flags. */
-    float roll_min; /*< [rad] Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left) */
-    float roll_max; /*< [rad] Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left) */
-    float pitch_min; /*< [rad] Minimum hardware pitch angle (positive: up, negative: down) */
-    float pitch_max; /*< [rad] Maximum hardware pitch angle (positive: up, negative: down) */
-    float yaw_min; /*< [rad] Minimum hardware yaw angle (positive: to the right, negative: to the left) */
-    float yaw_max; /*< [rad] Maximum hardware yaw angle (positive: to the right, negative: to the left) */
+    float roll_min; /*< [rad] Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left). NAN if unknown. */
+    float roll_max; /*< [rad] Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left). NAN if unknown. */
+    float pitch_min; /*< [rad] Minimum hardware pitch angle (positive: up, negative: down). NAN if unknown. */
+    float pitch_max; /*< [rad] Maximum hardware pitch angle (positive: up, negative: down). NAN if unknown. */
+    float yaw_min; /*< [rad] Minimum hardware yaw angle (positive: to the right, negative: to the left). NAN if unknown. */
+    float yaw_max; /*< [rad] Maximum hardware yaw angle (positive: to the right, negative: to the left). NAN if unknown. */
 
 
     inline std::string get_name(void) const override

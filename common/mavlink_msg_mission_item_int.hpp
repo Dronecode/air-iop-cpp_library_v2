@@ -26,7 +26,7 @@ struct MISSION_ITEM_INT : mavlink::Message {
     uint8_t frame; /*<  The coordinate system of the waypoint. */
     uint16_t command; /*<  The scheduled action for the waypoint. */
     uint8_t current; /*<  false:0, true:1 */
-    uint8_t autocontinue; /*<  Autocontinue to next waypoint */
+    uint8_t autocontinue; /*<  Autocontinue to next waypoint. 0: false, 1: true. Set false to pause mission after the item completes. */
     float param1; /*<  PARAM1, see MAV_CMD enum */
     float param2; /*<  PARAM2, see MAV_CMD enum */
     float param3; /*<  PARAM3, see MAV_CMD enum */

@@ -57,7 +57,7 @@ enum class MAV_TYPE : uint8_t
     VTOL_TILTROTOR=21, /* Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to tilt (some) rotors to provide thrust in cruise flight. | */
     VTOL_FIXEDROTOR=22, /* VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay (nominally) horizontal in all flight phases. | */
     VTOL_TAILSITTER=23, /* Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or MAV_TYPE_VTOL_QUADROTOR if appropriate. | */
-    VTOL_RESERVED4=24, /* VTOL reserved 4 | */
+    VTOL_TILTWING=24, /* Tiltwing VTOL. Fuselage stays horizontal in all flight phases. The whole wing, along with any attached engine, can tilt between vertical and horizontal mode. | */
     VTOL_RESERVED5=25, /* VTOL reserved 5 | */
     GIMBAL=26, /* Gimbal | */
     ADSB=27, /* ADSB system | */
@@ -240,6 +240,7 @@ enum class MAV_COMPONENT
     COMP_ID_QX1_GIMBAL=159, /* Gimbal ID for QX1. | */
     COMP_ID_FLARM=160, /* FLARM collision alert component. | */
     COMP_ID_PARACHUTE=161, /* Parachute component. | */
+    COMP_ID_WINCH=169, /* Winch component. | */
     COMP_ID_GIMBAL2=171, /* Gimbal #2. | */
     COMP_ID_GIMBAL3=172, /* Gimbal #3. | */
     COMP_ID_GIMBAL4=173, /* Gimbal #4 | */
@@ -268,7 +269,7 @@ enum class MAV_COMPONENT
     COMP_ID_UDP_BRIDGE=240, /* Component to bridge MAVLink to UDP (i.e. from a UART). | */
     COMP_ID_UART_BRIDGE=241, /* Component to bridge to UART (i.e. from UDP). | */
     COMP_ID_TUNNEL_NODE=242, /* Component handling TUNNEL messages (e.g. vendor specific GUI of a component). | */
-    COMP_ID_SYSTEM_CONTROL=250, /* Component for handling system messages (e.g. to ARM, takeoff, etc.). | */
+    COMP_ID_SYSTEM_CONTROL=250, /* Deprecated, don't use. Component for handling system messages (e.g. to ARM, takeoff, etc.). | */
 };
 
 //! MAV_COMPONENT ENUM_END

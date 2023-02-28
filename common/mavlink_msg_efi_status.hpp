@@ -13,7 +13,7 @@ namespace msg {
  */
 struct EFI_STATUS : mavlink::Message {
     static constexpr msgid_t MSG_ID = 225;
-    static constexpr size_t LENGTH = 69;
+    static constexpr size_t LENGTH = 73;
     static constexpr size_t MIN_LENGTH = 65;
     static constexpr uint8_t CRC_EXTRA = 208;
     static constexpr auto NAME = "EFI_STATUS";
@@ -37,6 +37,7 @@ struct EFI_STATUS : mavlink::Message {
     float throttle_out; /*< [%] Output throttle */
     float pt_compensation; /*<  Pressure/temperature compensation */
     float ignition_voltage; /*< [V] Supply voltage to EFI sparking system.  Zero in this value means "unknown", so if the supply voltage really is zero volts use 0.0001 instead. */
+    float fuel_pressure; /*< [kPa] Fuel pressure. Zero in this value means "unknown", so if the fuel pressure really is zero kPa use 0.0001 instead. */
 
 
     inline std::string get_name(void) const override
@@ -72,6 +73,7 @@ struct EFI_STATUS : mavlink::Message {
         ss << "  throttle_out: " << throttle_out << std::endl;
         ss << "  pt_compensation: " << pt_compensation << std::endl;
         ss << "  ignition_voltage: " << ignition_voltage << std::endl;
+        ss << "  fuel_pressure: " << fuel_pressure << std::endl;
 
         return ss.str();
     }
@@ -98,6 +100,7 @@ struct EFI_STATUS : mavlink::Message {
         map << pt_compensation;               // offset: 60
         map << health;                        // offset: 64
         map << ignition_voltage;              // offset: 65
+        map << fuel_pressure;                 // offset: 69
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
@@ -120,6 +123,7 @@ struct EFI_STATUS : mavlink::Message {
         map >> pt_compensation;               // offset: 60
         map >> health;                        // offset: 64
         map >> ignition_voltage;              // offset: 65
+        map >> fuel_pressure;                 // offset: 69
     }
 };
 

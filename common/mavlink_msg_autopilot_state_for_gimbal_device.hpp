@@ -9,11 +9,11 @@ namespace msg {
 /**
  * @brief AUTOPILOT_STATE_FOR_GIMBAL_DEVICE message
  *
- * Low level message containing autopilot state relevant for a gimbal device. This message is to be sent from the gimbal manager to the gimbal device component. The data of this message server for the gimbal's estimator corrections in particular horizon compensation, as well as the autopilot's control intention e.g. feed forward angular control in z-axis.
+ * Low level message containing autopilot state relevant for a gimbal device. This message is to be sent from the autopilot to the gimbal device component. The data of this message are for the gimbal device's estimator corrections, in particular horizon compensation, as well as indicates autopilot control intentions, e.g. feed forward angular control in the z-axis.
  */
 struct AUTOPILOT_STATE_FOR_GIMBAL_DEVICE : mavlink::Message {
     static constexpr msgid_t MSG_ID = 286;
-    static constexpr size_t LENGTH = 53;
+    static constexpr size_t LENGTH = 57;
     static constexpr size_t MIN_LENGTH = 53;
     static constexpr uint8_t CRC_EXTRA = 210;
     static constexpr auto NAME = "AUTOPILOT_STATE_FOR_GIMBAL_DEVICE";
@@ -23,14 +23,15 @@ struct AUTOPILOT_STATE_FOR_GIMBAL_DEVICE : mavlink::Message {
     uint8_t target_component; /*<  Component ID */
     uint64_t time_boot_us; /*< [us] Timestamp (time since system boot). */
     std::array<float, 4> q; /*<  Quaternion components of autopilot attitude: w, x, y, z (1 0 0 0 is the null-rotation, Hamilton convention). */
-    uint32_t q_estimated_delay_us; /*< [us] Estimated delay of the attitude data. */
-    float vx; /*< [m/s] X Speed in NED (North, East, Down). */
-    float vy; /*< [m/s] Y Speed in NED (North, East, Down). */
-    float vz; /*< [m/s] Z Speed in NED (North, East, Down). */
-    uint32_t v_estimated_delay_us; /*< [us] Estimated delay of the speed data. */
-    float feed_forward_angular_velocity_z; /*< [rad/s] Feed forward Z component of angular velocity, positive is yawing to the right, NaN to be ignored. This is to indicate if the autopilot is actively yawing. */
+    uint32_t q_estimated_delay_us; /*< [us] Estimated delay of the attitude data. 0 if unknown. */
+    float vx; /*< [m/s] X Speed in NED (North, East, Down). NAN if unknown. */
+    float vy; /*< [m/s] Y Speed in NED (North, East, Down). NAN if unknown. */
+    float vz; /*< [m/s] Z Speed in NED (North, East, Down). NAN if unknown. */
+    uint32_t v_estimated_delay_us; /*< [us] Estimated delay of the speed data. 0 if unknown. */
+    float feed_forward_angular_velocity_z; /*< [rad/s] Feed forward Z component of angular velocity (positive: yawing to the right). NaN to be ignored. This is to indicate if the autopilot is actively yawing. */
     uint16_t estimator_status; /*<  Bitmap indicating which estimator outputs are valid. */
     uint8_t landed_state; /*<  The landed state. Is set to MAV_LANDED_STATE_UNDEFINED if landed state is unknown. */
+    float angular_velocity_z; /*< [rad/s] Z component of angular velocity in NED (North, East, Down). NaN if unknown. */
 
 
     inline std::string get_name(void) const override
@@ -60,6 +61,7 @@ struct AUTOPILOT_STATE_FOR_GIMBAL_DEVICE : mavlink::Message {
         ss << "  feed_forward_angular_velocity_z: " << feed_forward_angular_velocity_z << std::endl;
         ss << "  estimator_status: " << estimator_status << std::endl;
         ss << "  landed_state: " << +landed_state << std::endl;
+        ss << "  angular_velocity_z: " << angular_velocity_z << std::endl;
 
         return ss.str();
     }
@@ -80,6 +82,7 @@ struct AUTOPILOT_STATE_FOR_GIMBAL_DEVICE : mavlink::Message {
         map << target_system;                 // offset: 50
         map << target_component;              // offset: 51
         map << landed_state;                  // offset: 52
+        map << angular_velocity_z;            // offset: 53
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
@@ -96,6 +99,7 @@ struct AUTOPILOT_STATE_FOR_GIMBAL_DEVICE : mavlink::Message {
         map >> target_system;                 // offset: 50
         map >> target_component;              // offset: 51
         map >> landed_state;                  // offset: 52
+        map >> angular_velocity_z;            // offset: 53
     }
 };
 

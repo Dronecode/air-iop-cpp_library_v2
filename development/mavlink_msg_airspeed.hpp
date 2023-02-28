@@ -13,19 +13,17 @@ namespace msg {
  */
 struct AIRSPEED : mavlink::Message {
     static constexpr msgid_t MSG_ID = 295;
-    static constexpr size_t LENGTH = 20;
-    static constexpr size_t MIN_LENGTH = 20;
-    static constexpr uint8_t CRC_EXTRA = 41;
+    static constexpr size_t LENGTH = 12;
+    static constexpr size_t MIN_LENGTH = 12;
+    static constexpr uint8_t CRC_EXTRA = 234;
     static constexpr auto NAME = "AIRSPEED";
 
 
     uint8_t id; /*<  Sensor ID. */
-    float airspeed; /*< [m/s] Calibrated airspeed (CAS) if available, otherwise indicated airspeed (IAS). */
+    float airspeed; /*< [m/s] Calibrated airspeed (CAS). */
     int16_t temperature; /*< [cdegC] Temperature. INT16_MAX for value unknown/not supplied. */
-    float press_diff; /*< [hPa] Differential pressure. NaN for value unknown/not supplied. */
-    float press_static; /*< [hPa] Static pressure. NaN for value unknown/not supplied. */
-    float error; /*< [m/s] Error/accuracy. NaN for value unknown/not supplied. */
-    uint8_t type; /*<  Airspeed sensor type. NaN for value unknown/not supplied. Used to estimate accuracy (i.e. as an alternative to using the error field). */
+    float raw_press; /*< [hPa] Raw differential pressure. NaN for value unknown/not supplied. */
+    uint8_t flags; /*<  Airspeed sensor flags. */
 
 
     inline std::string get_name(void) const override
@@ -46,10 +44,8 @@ struct AIRSPEED : mavlink::Message {
         ss << "  id: " << +id << std::endl;
         ss << "  airspeed: " << airspeed << std::endl;
         ss << "  temperature: " << temperature << std::endl;
-        ss << "  press_diff: " << press_diff << std::endl;
-        ss << "  press_static: " << press_static << std::endl;
-        ss << "  error: " << error << std::endl;
-        ss << "  type: " << +type << std::endl;
+        ss << "  raw_press: " << raw_press << std::endl;
+        ss << "  flags: " << +flags << std::endl;
 
         return ss.str();
     }
@@ -59,23 +55,19 @@ struct AIRSPEED : mavlink::Message {
         map.reset(MSG_ID, LENGTH);
 
         map << airspeed;                      // offset: 0
-        map << press_diff;                    // offset: 4
-        map << press_static;                  // offset: 8
-        map << error;                         // offset: 12
-        map << temperature;                   // offset: 16
-        map << id;                            // offset: 18
-        map << type;                          // offset: 19
+        map << raw_press;                     // offset: 4
+        map << temperature;                   // offset: 8
+        map << id;                            // offset: 10
+        map << flags;                         // offset: 11
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
     {
         map >> airspeed;                      // offset: 0
-        map >> press_diff;                    // offset: 4
-        map >> press_static;                  // offset: 8
-        map >> error;                         // offset: 12
-        map >> temperature;                   // offset: 16
-        map >> id;                            // offset: 18
-        map >> type;                          // offset: 19
+        map >> raw_press;                     // offset: 4
+        map >> temperature;                   // offset: 8
+        map >> id;                            // offset: 10
+        map >> flags;                         // offset: 11
     }
 };
 

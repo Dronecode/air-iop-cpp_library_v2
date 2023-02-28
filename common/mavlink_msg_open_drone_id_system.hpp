@@ -26,10 +26,10 @@ struct OPEN_DRONE_ID_SYSTEM : mavlink::Message {
     uint8_t classification_type; /*<  Specifies the classification type of the UA. */
     int32_t operator_latitude; /*< [degE7] Latitude of the operator. If unknown: 0 (both Lat/Lon). */
     int32_t operator_longitude; /*< [degE7] Longitude of the operator. If unknown: 0 (both Lat/Lon). */
-    uint16_t area_count; /*<  Number of aircraft in the area, group or formation (default 1). */
-    uint16_t area_radius; /*< [m] Radius of the cylindrical area of the group or formation (default 0). */
-    float area_ceiling; /*< [m] Area Operations Ceiling relative to WGS84. If unknown: -1000 m. */
-    float area_floor; /*< [m] Area Operations Floor relative to WGS84. If unknown: -1000 m. */
+    uint16_t area_count; /*<  Number of aircraft in the area, group or formation (default 1). Used only for swarms/multiple UA. */
+    uint16_t area_radius; /*< [m] Radius of the cylindrical area of the group or formation (default 0). Used only for swarms/multiple UA. */
+    float area_ceiling; /*< [m] Area Operations Ceiling relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple UA. */
+    float area_floor; /*< [m] Area Operations Floor relative to WGS84. If unknown: -1000 m. Used only for swarms/multiple UA. */
     uint8_t category_eu; /*<  When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the category of the UA. */
     uint8_t class_eu; /*<  When classification_type is MAV_ODID_CLASSIFICATION_TYPE_EU, specifies the class of the UA. */
     float operator_altitude_geo; /*< [m] Geodetic altitude of the operator relative to WGS84. If unknown: -1000 m. */

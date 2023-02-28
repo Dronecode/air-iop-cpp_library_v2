@@ -30,9 +30,9 @@ struct HOME_POSITION : mavlink::Message {
     int32_t latitude; /*< [degE7] Latitude (WGS84) */
     int32_t longitude; /*< [degE7] Longitude (WGS84) */
     int32_t altitude; /*< [mm] Altitude (MSL). Positive for up. */
-    float x; /*< [m] Local X position of this position in the local coordinate frame */
-    float y; /*< [m] Local Y position of this position in the local coordinate frame */
-    float z; /*< [m] Local Z position of this position in the local coordinate frame */
+    float x; /*< [m] Local X position of this position in the local coordinate frame (NED) */
+    float y; /*< [m] Local Y position of this position in the local coordinate frame (NED) */
+    float z; /*< [m] Local Z position of this position in the local coordinate frame (NED: positive "down") */
     std::array<float, 4> q; /*<  World to surface normal and heading transformation of the takeoff position. Used to indicate the heading and slope of the ground */
     float approach_x; /*< [m] Local X position of the end of the approach vector. Multicopters should set this position based on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the takeoff, assuming the takeoff happened from the threshold / touchdown zone. */
     float approach_y; /*< [m] Local Y position of the end of the approach vector. Multicopters should set this position based on their takeoff path. Grass-landing fixed wing aircraft should set it the same way as multicopters. Runway-landing fixed wing aircraft should set it to the opposite direction of the takeoff, assuming the takeoff happened from the threshold / touchdown zone. */

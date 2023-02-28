@@ -13,7 +13,7 @@ namespace msg {
  */
 struct SIM_STATE : mavlink::Message {
     static constexpr msgid_t MSG_ID = 108;
-    static constexpr size_t LENGTH = 84;
+    static constexpr size_t LENGTH = 92;
     static constexpr size_t MIN_LENGTH = 84;
     static constexpr uint8_t CRC_EXTRA = 32;
     static constexpr auto NAME = "SIM_STATE";
@@ -32,14 +32,16 @@ struct SIM_STATE : mavlink::Message {
     float xgyro; /*< [rad/s] Angular speed around X axis */
     float ygyro; /*< [rad/s] Angular speed around Y axis */
     float zgyro; /*< [rad/s] Angular speed around Z axis */
-    float lat; /*< [deg] Latitude */
-    float lon; /*< [deg] Longitude */
+    float lat; /*< [deg] Latitude (lower precision). Both this and the lat_int field should be set. */
+    float lon; /*< [deg] Longitude (lower precision). Both this and the lon_int field should be set. */
     float alt; /*< [m] Altitude */
     float std_dev_horz; /*<  Horizontal position standard deviation */
     float std_dev_vert; /*<  Vertical position standard deviation */
     float vn; /*< [m/s] True velocity in north direction in earth-fixed NED frame */
     float ve; /*< [m/s] True velocity in east direction in earth-fixed NED frame */
     float vd; /*< [m/s] True velocity in down direction in earth-fixed NED frame */
+    int32_t lat_int; /*< [degE7] Latitude (higher precision). If 0, recipients should use the lat field value (otherwise this field is preferred). */
+    int32_t lon_int; /*< [degE7] Longitude (higher precision). If 0, recipients should use the lon field value (otherwise this field is preferred). */
 
 
     inline std::string get_name(void) const override
@@ -78,6 +80,8 @@ struct SIM_STATE : mavlink::Message {
         ss << "  vn: " << vn << std::endl;
         ss << "  ve: " << ve << std::endl;
         ss << "  vd: " << vd << std::endl;
+        ss << "  lat_int: " << lat_int << std::endl;
+        ss << "  lon_int: " << lon_int << std::endl;
 
         return ss.str();
     }
@@ -107,6 +111,8 @@ struct SIM_STATE : mavlink::Message {
         map << vn;                            // offset: 72
         map << ve;                            // offset: 76
         map << vd;                            // offset: 80
+        map << lat_int;                       // offset: 84
+        map << lon_int;                       // offset: 88
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
@@ -132,6 +138,8 @@ struct SIM_STATE : mavlink::Message {
         map >> vn;                            // offset: 72
         map >> ve;                            // offset: 76
         map >> vd;                            // offset: 80
+        map >> lat_int;                       // offset: 84
+        map >> lon_int;                       // offset: 88
     }
 };
 

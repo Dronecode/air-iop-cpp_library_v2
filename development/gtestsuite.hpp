@@ -94,81 +94,6 @@ TEST(development_interop, PARAM_ACK_TRANSACTION)
 }
 #endif
 
-TEST(development, MISSION_CHANGED)
-{
-    mavlink::mavlink_message_t msg;
-    mavlink::MsgMap map1(msg);
-    mavlink::MsgMap map2(msg);
-
-    mavlink::development::msg::MISSION_CHANGED packet_in{};
-    packet_in.start_index = 17235;
-    packet_in.end_index = 17339;
-    packet_in.origin_sysid = 17;
-    packet_in.origin_compid = 84;
-    packet_in.mission_type = 151;
-
-    mavlink::development::msg::MISSION_CHANGED packet1{};
-    mavlink::development::msg::MISSION_CHANGED packet2{};
-
-    packet1 = packet_in;
-
-    //std::cout << packet1.to_yaml() << std::endl;
-
-    packet1.serialize(map1);
-
-    mavlink::mavlink_finalize_message(&msg, 1, 1, packet1.MIN_LENGTH, packet1.LENGTH, packet1.CRC_EXTRA);
-
-    packet2.deserialize(map2);
-
-    EXPECT_EQ(packet1.start_index, packet2.start_index);
-    EXPECT_EQ(packet1.end_index, packet2.end_index);
-    EXPECT_EQ(packet1.origin_sysid, packet2.origin_sysid);
-    EXPECT_EQ(packet1.origin_compid, packet2.origin_compid);
-    EXPECT_EQ(packet1.mission_type, packet2.mission_type);
-}
-
-#ifdef TEST_INTEROP
-TEST(development_interop, MISSION_CHANGED)
-{
-    mavlink_message_t msg;
-
-    // to get nice print
-    memset(&msg, 0, sizeof(msg));
-
-    mavlink_mission_changed_t packet_c {
-         17235, 17339, 17, 84, 151
-    };
-
-    mavlink::development::msg::MISSION_CHANGED packet_in{};
-    packet_in.start_index = 17235;
-    packet_in.end_index = 17339;
-    packet_in.origin_sysid = 17;
-    packet_in.origin_compid = 84;
-    packet_in.mission_type = 151;
-
-    mavlink::development::msg::MISSION_CHANGED packet2{};
-
-    mavlink_msg_mission_changed_encode(1, 1, &msg, &packet_c);
-
-    // simulate message-handling callback
-    [&packet2](const mavlink_message_t *cmsg) {
-        MsgMap map2(cmsg);
-
-        packet2.deserialize(map2);
-    } (&msg);
-
-    EXPECT_EQ(packet_in.start_index, packet2.start_index);
-    EXPECT_EQ(packet_in.end_index, packet2.end_index);
-    EXPECT_EQ(packet_in.origin_sysid, packet2.origin_sysid);
-    EXPECT_EQ(packet_in.origin_compid, packet2.origin_compid);
-    EXPECT_EQ(packet_in.mission_type, packet2.mission_type);
-
-#ifdef PRINT_MSG
-    PRINT_MSG(msg);
-#endif
-}
-#endif
-
 TEST(development, MISSION_CHECKSUM)
 {
     mavlink::mavlink_message_t msg;
@@ -239,13 +164,11 @@ TEST(development, AIRSPEED)
     mavlink::MsgMap map2(msg);
 
     mavlink::development::msg::AIRSPEED packet_in{};
-    packet_in.id = 187;
+    packet_in.id = 163;
     packet_in.airspeed = 17.0;
-    packet_in.temperature = 18067;
-    packet_in.press_diff = 45.0;
-    packet_in.press_static = 73.0;
-    packet_in.error = 101.0;
-    packet_in.type = 254;
+    packet_in.temperature = 17651;
+    packet_in.raw_press = 45.0;
+    packet_in.flags = 230;
 
     mavlink::development::msg::AIRSPEED packet1{};
     mavlink::development::msg::AIRSPEED packet2{};
@@ -263,10 +186,8 @@ TEST(development, AIRSPEED)
     EXPECT_EQ(packet1.id, packet2.id);
     EXPECT_EQ(packet1.airspeed, packet2.airspeed);
     EXPECT_EQ(packet1.temperature, packet2.temperature);
-    EXPECT_EQ(packet1.press_diff, packet2.press_diff);
-    EXPECT_EQ(packet1.press_static, packet2.press_static);
-    EXPECT_EQ(packet1.error, packet2.error);
-    EXPECT_EQ(packet1.type, packet2.type);
+    EXPECT_EQ(packet1.raw_press, packet2.raw_press);
+    EXPECT_EQ(packet1.flags, packet2.flags);
 }
 
 #ifdef TEST_INTEROP
@@ -278,17 +199,15 @@ TEST(development_interop, AIRSPEED)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_airspeed_t packet_c {
-         17.0, 45.0, 73.0, 101.0, 18067, 187, 254
+         17.0, 45.0, 17651, 163, 230
     };
 
     mavlink::development::msg::AIRSPEED packet_in{};
-    packet_in.id = 187;
+    packet_in.id = 163;
     packet_in.airspeed = 17.0;
-    packet_in.temperature = 18067;
-    packet_in.press_diff = 45.0;
-    packet_in.press_static = 73.0;
-    packet_in.error = 101.0;
-    packet_in.type = 254;
+    packet_in.temperature = 17651;
+    packet_in.raw_press = 45.0;
+    packet_in.flags = 230;
 
     mavlink::development::msg::AIRSPEED packet2{};
 
@@ -304,10 +223,8 @@ TEST(development_interop, AIRSPEED)
     EXPECT_EQ(packet_in.id, packet2.id);
     EXPECT_EQ(packet_in.airspeed, packet2.airspeed);
     EXPECT_EQ(packet_in.temperature, packet2.temperature);
-    EXPECT_EQ(packet_in.press_diff, packet2.press_diff);
-    EXPECT_EQ(packet_in.press_static, packet2.press_static);
-    EXPECT_EQ(packet_in.error, packet2.error);
-    EXPECT_EQ(packet_in.type, packet2.type);
+    EXPECT_EQ(packet_in.raw_press, packet2.raw_press);
+    EXPECT_EQ(packet_in.flags, packet2.flags);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);
@@ -477,6 +394,93 @@ TEST(development_interop, FIGURE_EIGHT_EXECUTION_STATUS)
 }
 #endif
 
+TEST(development, BATTERY_STATUS_V2)
+{
+    mavlink::mavlink_message_t msg;
+    mavlink::MsgMap map1(msg);
+    mavlink::MsgMap map2(msg);
+
+    mavlink::development::msg::BATTERY_STATUS_V2 packet_in{};
+    packet_in.id = 199;
+    packet_in.temperature = 18275;
+    packet_in.voltage = 17.0;
+    packet_in.current = 45.0;
+    packet_in.capacity_consumed = 73.0;
+    packet_in.capacity_remaining = 101.0;
+    packet_in.percent_remaining = 10;
+    packet_in.status_flags = 963498296;
+
+    mavlink::development::msg::BATTERY_STATUS_V2 packet1{};
+    mavlink::development::msg::BATTERY_STATUS_V2 packet2{};
+
+    packet1 = packet_in;
+
+    //std::cout << packet1.to_yaml() << std::endl;
+
+    packet1.serialize(map1);
+
+    mavlink::mavlink_finalize_message(&msg, 1, 1, packet1.MIN_LENGTH, packet1.LENGTH, packet1.CRC_EXTRA);
+
+    packet2.deserialize(map2);
+
+    EXPECT_EQ(packet1.id, packet2.id);
+    EXPECT_EQ(packet1.temperature, packet2.temperature);
+    EXPECT_EQ(packet1.voltage, packet2.voltage);
+    EXPECT_EQ(packet1.current, packet2.current);
+    EXPECT_EQ(packet1.capacity_consumed, packet2.capacity_consumed);
+    EXPECT_EQ(packet1.capacity_remaining, packet2.capacity_remaining);
+    EXPECT_EQ(packet1.percent_remaining, packet2.percent_remaining);
+    EXPECT_EQ(packet1.status_flags, packet2.status_flags);
+}
+
+#ifdef TEST_INTEROP
+TEST(development_interop, BATTERY_STATUS_V2)
+{
+    mavlink_message_t msg;
+
+    // to get nice print
+    memset(&msg, 0, sizeof(msg));
+
+    mavlink_battery_status_v2_t packet_c {
+         17.0, 45.0, 73.0, 101.0, 963498296, 18275, 199, 10
+    };
+
+    mavlink::development::msg::BATTERY_STATUS_V2 packet_in{};
+    packet_in.id = 199;
+    packet_in.temperature = 18275;
+    packet_in.voltage = 17.0;
+    packet_in.current = 45.0;
+    packet_in.capacity_consumed = 73.0;
+    packet_in.capacity_remaining = 101.0;
+    packet_in.percent_remaining = 10;
+    packet_in.status_flags = 963498296;
+
+    mavlink::development::msg::BATTERY_STATUS_V2 packet2{};
+
+    mavlink_msg_battery_status_v2_encode(1, 1, &msg, &packet_c);
+
+    // simulate message-handling callback
+    [&packet2](const mavlink_message_t *cmsg) {
+        MsgMap map2(cmsg);
+
+        packet2.deserialize(map2);
+    } (&msg);
+
+    EXPECT_EQ(packet_in.id, packet2.id);
+    EXPECT_EQ(packet_in.temperature, packet2.temperature);
+    EXPECT_EQ(packet_in.voltage, packet2.voltage);
+    EXPECT_EQ(packet_in.current, packet2.current);
+    EXPECT_EQ(packet_in.capacity_consumed, packet2.capacity_consumed);
+    EXPECT_EQ(packet_in.capacity_remaining, packet2.capacity_remaining);
+    EXPECT_EQ(packet_in.percent_remaining, packet2.percent_remaining);
+    EXPECT_EQ(packet_in.status_flags, packet2.status_flags);
+
+#ifdef PRINT_MSG
+    PRINT_MSG(msg);
+#endif
+}
+#endif
+
 TEST(development, COMPONENT_INFORMATION_BASIC)
 {
     mavlink::mavlink_message_t msg;
@@ -485,11 +489,12 @@ TEST(development, COMPONENT_INFORMATION_BASIC)
 
     mavlink::development::msg::COMPONENT_INFORMATION_BASIC packet_in{};
     packet_in.time_boot_ms = 963497880;
-    packet_in.vendor_name = {{ 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72 }};
-    packet_in.model_name = {{ 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168 }};
+    packet_in.capabilities = 93372036854775807ULL;
+    packet_in.vendor_name = to_char_array("MNOPQRSTUVWXYZABCDEFGHIJKLMNOPQ");
+    packet_in.model_name = to_char_array("STUVWXYZABCDEFGHIJKLMNOPQRSTUVW");
     packet_in.software_version = to_char_array("YZABCDEFGHIJKLMNOPQRSTU");
     packet_in.hardware_version = to_char_array("WXYZABCDEFGHIJKLMNOPQRS");
-    packet_in.capabilities = 93372036854775807ULL;
+    packet_in.serial_number = to_char_array("UVWXYZABCDEFGHIJKLMNOPQRSTUVWXY");
 
     mavlink::development::msg::COMPONENT_INFORMATION_BASIC packet1{};
     mavlink::development::msg::COMPONENT_INFORMATION_BASIC packet2{};
@@ -505,11 +510,12 @@ TEST(development, COMPONENT_INFORMATION_BASIC)
     packet2.deserialize(map2);
 
     EXPECT_EQ(packet1.time_boot_ms, packet2.time_boot_ms);
+    EXPECT_EQ(packet1.capabilities, packet2.capabilities);
     EXPECT_EQ(packet1.vendor_name, packet2.vendor_name);
     EXPECT_EQ(packet1.model_name, packet2.model_name);
     EXPECT_EQ(packet1.software_version, packet2.software_version);
     EXPECT_EQ(packet1.hardware_version, packet2.hardware_version);
-    EXPECT_EQ(packet1.capabilities, packet2.capabilities);
+    EXPECT_EQ(packet1.serial_number, packet2.serial_number);
 }
 
 #ifdef TEST_INTEROP
@@ -521,16 +527,17 @@ TEST(development_interop, COMPONENT_INFORMATION_BASIC)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_component_information_basic_t packet_c {
-         93372036854775807ULL, 963497880, { 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72 }, { 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168 }, "YZABCDEFGHIJKLMNOPQRSTU", "WXYZABCDEFGHIJKLMNOPQRS"
+         93372036854775807ULL, 963497880, "MNOPQRSTUVWXYZABCDEFGHIJKLMNOPQ", "STUVWXYZABCDEFGHIJKLMNOPQRSTUVW", "YZABCDEFGHIJKLMNOPQRSTU", "WXYZABCDEFGHIJKLMNOPQRS", "UVWXYZABCDEFGHIJKLMNOPQRSTUVWXY"
     };
 
     mavlink::development::msg::COMPONENT_INFORMATION_BASIC packet_in{};
     packet_in.time_boot_ms = 963497880;
-    packet_in.vendor_name = {{ 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72 }};
-    packet_in.model_name = {{ 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168 }};
+    packet_in.capabilities = 93372036854775807ULL;
+    packet_in.vendor_name = to_char_array("MNOPQRSTUVWXYZABCDEFGHIJKLMNOPQ");
+    packet_in.model_name = to_char_array("STUVWXYZABCDEFGHIJKLMNOPQRSTUVW");
     packet_in.software_version = to_char_array("YZABCDEFGHIJKLMNOPQRSTU");
     packet_in.hardware_version = to_char_array("WXYZABCDEFGHIJKLMNOPQRS");
-    packet_in.capabilities = 93372036854775807ULL;
+    packet_in.serial_number = to_char_array("UVWXYZABCDEFGHIJKLMNOPQRSTUVWXY");
 
     mavlink::development::msg::COMPONENT_INFORMATION_BASIC packet2{};
 
@@ -544,11 +551,12 @@ TEST(development_interop, COMPONENT_INFORMATION_BASIC)
     } (&msg);
 
     EXPECT_EQ(packet_in.time_boot_ms, packet2.time_boot_ms);
+    EXPECT_EQ(packet_in.capabilities, packet2.capabilities);
     EXPECT_EQ(packet_in.vendor_name, packet2.vendor_name);
     EXPECT_EQ(packet_in.model_name, packet2.model_name);
     EXPECT_EQ(packet_in.software_version, packet2.software_version);
     EXPECT_EQ(packet_in.hardware_version, packet2.hardware_version);
-    EXPECT_EQ(packet_in.capabilities, packet2.capabilities);
+    EXPECT_EQ(packet_in.serial_number, packet2.serial_number);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);
