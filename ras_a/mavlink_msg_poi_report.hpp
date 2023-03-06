@@ -21,7 +21,7 @@ namespace msg {
       
  */
 struct POI_REPORT : mavlink::Message {
-    static constexpr msgid_t MSG_ID = 238;
+    static constexpr msgid_t MSG_ID = 51000;
     static constexpr size_t LENGTH = 103;
     static constexpr size_t MIN_LENGTH = 103;
     static constexpr uint8_t CRC_EXTRA = 91;

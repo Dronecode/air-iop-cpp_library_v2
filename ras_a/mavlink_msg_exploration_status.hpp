@@ -12,7 +12,7 @@ namespace msg {
  * Provides status over an exploration task. The message should, by default, be streamed at 1Hz.
  */
 struct EXPLORATION_STATUS : mavlink::Message {
-    static constexpr msgid_t MSG_ID = 450;
+    static constexpr msgid_t MSG_ID = 51100;
     static constexpr size_t LENGTH = 24;
     static constexpr size_t MIN_LENGTH = 24;
     static constexpr uint8_t CRC_EXTRA = 86;

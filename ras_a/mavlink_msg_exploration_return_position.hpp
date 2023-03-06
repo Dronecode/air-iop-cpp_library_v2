@@ -17,7 +17,7 @@ namespace msg {
       
  */
 struct EXPLORATION_RETURN_POSITION : mavlink::Message {
-    static constexpr msgid_t MSG_ID = 452;
+    static constexpr msgid_t MSG_ID = 51102;
     static constexpr size_t LENGTH = 44;
     static constexpr size_t MIN_LENGTH = 44;
     static constexpr uint8_t CRC_EXTRA = 142;
