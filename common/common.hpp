@@ -957,7 +957,7 @@ enum class MAV_BATTERY_FUNCTION : uint8_t
     ALL=1, /* Battery supports all flight systems | */
     PROPULSION=2, /* Battery for the propulsion system | */
     AVIONICS=3, /* Avionics battery | */
-    TYPE_PAYLOAD=4, /* Payload battery | */
+    PAYLOAD=4, /* Payload battery | */
 };
 
 //! MAV_BATTERY_FUNCTION ENUM_END

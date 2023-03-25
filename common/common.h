@@ -10,7 +10,7 @@
     #error Wrong include order: MAVLINK_COMMON.H MUST NOT BE DIRECTLY USED. Include mavlink.h from the same directory instead or set ALL AND EVERY defines from MAVLINK.H manually accordingly, including the #define MAVLINK_H call.
 #endif
 
-#define MAVLINK_COMMON_XML_HASH 574077780930920013
+#define MAVLINK_COMMON_XML_HASH 4940958754562650491
 
 #ifdef __cplusplus
 extern "C" {
@@ -1014,7 +1014,7 @@ typedef enum MAV_BATTERY_FUNCTION
    MAV_BATTERY_FUNCTION_ALL=1, /* Battery supports all flight systems | */
    MAV_BATTERY_FUNCTION_PROPULSION=2, /* Battery for the propulsion system | */
    MAV_BATTERY_FUNCTION_AVIONICS=3, /* Avionics battery | */
-   MAV_BATTERY_TYPE_PAYLOAD=4, /* Payload battery | */
+   MAV_BATTERY_FUNCTION_PAYLOAD=4, /* Payload battery | */
    MAV_BATTERY_FUNCTION_ENUM_END=5, /*  | */
 } MAV_BATTERY_FUNCTION;
 #endif
