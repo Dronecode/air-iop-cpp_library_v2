@@ -16,15 +16,15 @@ namespace msg {
  */
 struct CURRENT_MODE : mavlink::Message {
     static constexpr msgid_t MSG_ID = 436;
-    static constexpr size_t LENGTH = 6;
-    static constexpr size_t MIN_LENGTH = 6;
-    static constexpr uint8_t CRC_EXTRA = 151;
+    static constexpr size_t LENGTH = 9;
+    static constexpr size_t MIN_LENGTH = 9;
+    static constexpr uint8_t CRC_EXTRA = 193;
     static constexpr auto NAME = "CURRENT_MODE";
 
 
     uint8_t standard_mode; /*<  Standard mode. */
-    uint8_t base_mode; /*<  System mode bitmap. */
     uint32_t custom_mode; /*<  A bitfield for use for autopilot-specific flags */
+    uint32_t intended_custom_mode; /*<  The custom_mode of the mode that was last commanded by the user (for example, with MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE or via RC). This should usually be the same as custom_mode. It will be different if the vehicle is unable to enter the intended mode, or has left that mode due to a failsafe condition. 0 indicates the intended custom mode is unknown/not supplied */
 
 
     inline std::string get_name(void) const override
@@ -43,8 +43,8 @@ struct CURRENT_MODE : mavlink::Message {
 
         ss << NAME << ":" << std::endl;
         ss << "  standard_mode: " << +standard_mode << std::endl;
-        ss << "  base_mode: " << +base_mode << std::endl;
         ss << "  custom_mode: " << custom_mode << std::endl;
+        ss << "  intended_custom_mode: " << intended_custom_mode << std::endl;
 
         return ss.str();
     }
@@ -54,15 +54,15 @@ struct CURRENT_MODE : mavlink::Message {
         map.reset(MSG_ID, LENGTH);
 
         map << custom_mode;                   // offset: 0
-        map << standard_mode;                 // offset: 4
-        map << base_mode;                     // offset: 5
+        map << intended_custom_mode;          // offset: 4
+        map << standard_mode;                 // offset: 8
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
     {
         map >> custom_mode;                   // offset: 0
-        map >> standard_mode;                 // offset: 4
-        map >> base_mode;                     // offset: 5
+        map >> intended_custom_mode;          // offset: 4
+        map >> standard_mode;                 // offset: 8
     }
 };
 

@@ -24,7 +24,7 @@ struct MISSION_CURRENT : mavlink::Message {
 
 
     uint16_t seq; /*<  Sequence */
-    uint16_t total; /*<  Total number of mission items. 0: Not supported, UINT16_MAX if no mission is present on the vehicle. */
+    uint16_t total; /*<  Total number of mission items on vehicle (on last item, sequence == total). If the autopilot stores its home location as part of the mission this will be excluded from the total. 0: Not supported, UINT16_MAX if no mission is present on the vehicle. */
     uint8_t mission_state; /*<  Mission state machine state. MISSION_STATE_UNKNOWN if state reporting not supported. */
     uint8_t mission_mode; /*<  Vehicle is in a mode that can execute mission items or suspended. 0: Unknown, 1: In mission mode, 2: Suspended (not in mission mode). */
 

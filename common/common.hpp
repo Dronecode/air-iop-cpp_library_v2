@@ -686,23 +686,6 @@ enum class MAV_ROI
 //! MAV_ROI ENUM_END
 constexpr auto MAV_ROI_ENUM_END = 5;
 
-/** @brief ACK / NACK / ERROR values as a result of MAV_CMDs and for mission item transmission. */
-enum class MAV_CMD_ACK
-{
-    OK=0, /* Command / mission item is ok. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
-    ERR_FAIL=1, /* Generic error message if none of the other reasons fails or if no detailed error reporting is implemented. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
-    ERR_ACCESS_DENIED=2, /* The system is refusing to accept this command from this source / communication partner. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
-    ERR_NOT_SUPPORTED=3, /* Command or mission item is not supported, other commands would be accepted. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
-    ERR_COORDINATE_FRAME_NOT_SUPPORTED=4, /* The coordinate frame of this command / mission item is not supported. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
-    ERR_COORDINATES_OUT_OF_RANGE=5, /* The coordinate frame of this command is ok, but he coordinate values exceed the safety limits of this system. This is a generic error, please use the more specific error messages below if possible. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
-    ERR_X_LAT_OUT_OF_RANGE=6, /* The X or latitude value is out of range. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
-    ERR_Y_LON_OUT_OF_RANGE=7, /* The Y or longitude value is out of range. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
-    ERR_Z_ALT_OUT_OF_RANGE=8, /* The Z or altitude value is out of range. |Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)| Reserved (default:0)|  */
-};
-
-//! MAV_CMD_ACK ENUM_END
-constexpr auto MAV_CMD_ACK_ENUM_END = 9;
-
 /** @brief Specifies the datatype of a MAVLink parameter. */
 enum class MAV_PARAM_TYPE : uint8_t
 {
@@ -750,10 +733,12 @@ enum class MAV_RESULT : uint8_t
     FAILED=4, /* Command is valid, but execution has failed. This is used to indicate any non-temporary or unexpected problem, i.e. any problem that must be fixed before the command can succeed/be retried. For example, attempting to write a file when out of memory, attempting to arm when sensors are not calibrated, etc. | */
     IN_PROGRESS=5, /* Command is valid and is being executed. This will be followed by further progress updates, i.e. the component may send further COMMAND_ACK messages with result MAV_RESULT_IN_PROGRESS (at a rate decided by the implementation), and must terminate by sending a COMMAND_ACK message with final result of the operation. The COMMAND_ACK.progress field can be used to indicate the progress of the operation. | */
     CANCELLED=6, /* Command has been cancelled (as a result of receiving a COMMAND_CANCEL message). | */
+    COMMAND_LONG_ONLY=7, /* Command is valid, but it is only accepted when sent as a COMMAND_LONG (as it has float values for params 5 and 6). | */
+    COMMAND_INT_ONLY=8, /* Command is valid, but it is only accepted when sent as a COMMAND_INT (as it encodes a location in params 5, 6 and 7, and hence requires a reference MAV_FRAME). | */
 };
 
 //! MAV_RESULT ENUM_END
-constexpr auto MAV_RESULT_ENUM_END = 7;
+constexpr auto MAV_RESULT_ENUM_END = 9;
 
 /** @brief Result of mission operation (in a MISSION_ACK message). */
 enum class MAV_MISSION_RESULT : uint8_t
@@ -1359,10 +1344,11 @@ enum class CAMERA_ZOOM_TYPE
     ZOOM_TYPE_CONTINUOUS=1, /* Continuous zoom up/down until stopped (-1 for wide, 1 for tele, 0 to stop zooming) | */
     ZOOM_TYPE_RANGE=2, /* Zoom value as proportion of full camera range (a percentage value between 0.0 and 100.0) | */
     ZOOM_TYPE_FOCAL_LENGTH=3, /* Zoom value/variable focal length in millimetres. Note that there is no message to get the valid zoom range of the camera, so this can type can only be used for cameras where the zoom range is known (implying that this cannot reliably be used in a GCS for an arbitrary camera) | */
+    ZOOM_TYPE_HORIZONTAL_FOV=4, /* Zoom value as horizontal field of view in degrees. | */
 };
 
 //! CAMERA_ZOOM_TYPE ENUM_END
-constexpr auto CAMERA_ZOOM_TYPE_ENUM_END = 4;
+constexpr auto CAMERA_ZOOM_TYPE_ENUM_END = 5;
 
 /** @brief Focus types for MAV_CMD_SET_CAMERA_FOCUS */
 enum class SET_FOCUS_TYPE
