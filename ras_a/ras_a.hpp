@@ -30,6 +30,58 @@ constexpr auto MAVLINK_VERSION = 0;
 // ENUM DEFINITIONS
 
 
+/** @brief MAVLINK component type reported in HEARTBEAT message. */
+enum class MAV_TYPE
+{
+    GENERIC=0, /* Generic micro air vehicle | */
+    FIXED_WING=1, /* Fixed wing aircraft. | */
+    QUADROTOR=2, /* Quadrotor | */
+    COAXIAL=3, /* Coaxial helicopter | */
+    HELICOPTER=4, /* Normal helicopter with tail rotor. | */
+    ANTENNA_TRACKER=5, /* Ground installation | */
+    GCS=6, /* Operator control unit / ground control station | */
+    AIRSHIP=7, /* Airship, controlled | */
+    FREE_BALLOON=8, /* Free balloon, uncontrolled | */
+    ROCKET=9, /* Rocket | */
+    GROUND_ROVER=10, /* Ground rover | */
+    SURFACE_BOAT=11, /* Surface vessel, boat, ship | */
+    SUBMARINE=12, /* Submarine | */
+    HEXAROTOR=13, /* Hexarotor | */
+    OCTOROTOR=14, /* Octorotor | */
+    TRICOPTER=15, /* Tricopter | */
+    FLAPPING_WING=16, /* Flapping wing | */
+    KITE=17, /* Kite | */
+    ONBOARD_CONTROLLER=18, /* Onboard companion controller | */
+    VTOL_TAILSITTER_DUOROTOR=19, /* Two-rotor Tailsitter VTOL that additionally uses control surfaces in vertical operation. Note, value previously named MAV_TYPE_VTOL_DUOROTOR. | */
+    VTOL_TAILSITTER_QUADROTOR=20, /* Quad-rotor Tailsitter VTOL using a V-shaped quad config in vertical operation. Note: value previously named MAV_TYPE_VTOL_QUADROTOR. | */
+    VTOL_TILTROTOR=21, /* Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to tilt (some) rotors to provide thrust in cruise flight. | */
+    VTOL_FIXEDROTOR=22, /* VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay (nominally) horizontal in all flight phases. | */
+    VTOL_TAILSITTER=23, /* Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_DUOROTOR or MAV_TYPE_VTOL_QUADROTOR if appropriate. | */
+    VTOL_TILTWING=24, /* Tiltwing VTOL. Fuselage stays horizontal in all flight phases. The whole wing, along with any attached engine, can tilt between vertical and horizontal mode. | */
+    VTOL_RESERVED5=25, /* VTOL reserved 5 | */
+    GIMBAL=26, /* Gimbal | */
+    ADSB=27, /* ADSB system | */
+    PARAFOIL=28, /* Steerable, nonrigid airfoil | */
+    DODECAROTOR=29, /* Dodecarotor | */
+    CAMERA=30, /* Camera | */
+    CHARGING_STATION=31, /* Charging station | */
+    FLARM=32, /* FLARM collision avoidance system | */
+    SERVO=33, /* Servo | */
+    ODID=34, /* Open Drone ID. See https://mavlink.io/en/services/opendroneid.html. | */
+    DECAROTOR=35, /* Decarotor | */
+    BATTERY=36, /* Battery | */
+    PARACHUTE=37, /* Parachute | */
+    LOG=38, /* Log | */
+    OSD=39, /* OSD | */
+    IMU=40, /* IMU | */
+    GPS=41, /* GPS | */
+    WINCH=42, /* Winch | */
+    GENERIC_COMPONENT=43, /* Generic component which implements the generic component attribute discovery and control interface through mavlink parameter exchange. | */
+};
+
+//! MAV_TYPE ENUM_END
+constexpr auto MAV_TYPE_ENUM_END = 44;
+
 /** @brief Micro air vehicle / autopilot classes. This identifies the individual model. */
 enum class MAV_AUTOPILOT
 {
@@ -202,10 +254,11 @@ enum class MAV_COMPONENT
     COMP_ID_UART_BRIDGE=241, /* Component to bridge to UART (i.e. from UDP). | */
     COMP_ID_TUNNEL_NODE=242, /* Component handling TUNNEL messages (e.g. vendor specific GUI of a component). | */
     COMP_ID_SYSTEM_CONTROL=250, /* Deprecated, don't use. Component for handling system messages (e.g. to ARM, takeoff, etc.). | */
+    COMP_ID_MONOLITHIC=254, /* A single component which presents many attributes and capabilities which prevent it from being binned into any of the other IDs in this enum. For context, refer to the monolithic generic component example in air-iop documentation release 1.2 | */
 };
 
 //! MAV_COMPONENT ENUM_END
-constexpr auto MAV_COMPONENT_ENUM_END = 251;
+constexpr auto MAV_COMPONENT_ENUM_END = 255;
 
 /** @brief Bitmask of (optional) autopilot capabilities (64 bit). If a bit is set, the autopilot supports this capability. */
 enum class MAV_PROTOCOL_CAPABILITY
