@@ -70,10 +70,10 @@ enum class MAV_STATE : uint8_t
     CALIBRATING=2, /* System is calibrating and not flight-ready. | */
     STANDBY=3, /* System is grounded and on standby. It can be launched any time. | */
     ACTIVE=4, /* System is active and might be already airborne. Motors are engaged. | */
-    CRITICAL=5, /* System is in a non-normal flight mode. It can however still navigate. | */
-    EMERGENCY=6, /* System is in a non-normal flight mode. It lost control over parts or over the whole airframe. It is in mayday and going down. | */
+    CRITICAL=5, /* System is in a non-normal flight mode (failsafe). It can however still navigate. | */
+    EMERGENCY=6, /* System is in a non-normal flight mode (failsafe). It lost control over parts or over the whole airframe. It is in mayday and going down. | */
     POWEROFF=7, /* System just initialized its power-down sequence, will shut down now. | */
-    FLIGHT_TERMINATION=8, /* System is terminating itself. | */
+    FLIGHT_TERMINATION=8, /* System is terminating itself (failsafe or commanded). | */
 };
 
 //! MAV_STATE ENUM_END

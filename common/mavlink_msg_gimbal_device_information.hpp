@@ -13,7 +13,7 @@ namespace msg {
  */
 struct GIMBAL_DEVICE_INFORMATION : mavlink::Message {
     static constexpr msgid_t MSG_ID = 283;
-    static constexpr size_t LENGTH = 144;
+    static constexpr size_t LENGTH = 145;
     static constexpr size_t MIN_LENGTH = 144;
     static constexpr uint8_t CRC_EXTRA = 74;
     static constexpr auto NAME = "GIMBAL_DEVICE_INFORMATION";
@@ -34,6 +34,7 @@ struct GIMBAL_DEVICE_INFORMATION : mavlink::Message {
     float pitch_max; /*< [rad] Maximum hardware pitch angle (positive: up, negative: down). NAN if unknown. */
     float yaw_min; /*< [rad] Minimum hardware yaw angle (positive: to the right, negative: to the left). NAN if unknown. */
     float yaw_max; /*< [rad] Maximum hardware yaw angle (positive: to the right, negative: to the left). NAN if unknown. */
+    uint8_t gimbal_device_id; /*<  This field is to be used if the gimbal manager and the gimbal device are the same component and hence have the same component ID. This field is then set to a number between 1-6. If the component ID is separate, this field is not required and must be set to 0. */
 
 
     inline std::string get_name(void) const override
@@ -66,6 +67,7 @@ struct GIMBAL_DEVICE_INFORMATION : mavlink::Message {
         ss << "  pitch_max: " << pitch_max << std::endl;
         ss << "  yaw_min: " << yaw_min << std::endl;
         ss << "  yaw_max: " << yaw_max << std::endl;
+        ss << "  gimbal_device_id: " << +gimbal_device_id << std::endl;
 
         return ss.str();
     }
@@ -89,6 +91,7 @@ struct GIMBAL_DEVICE_INFORMATION : mavlink::Message {
         map << vendor_name;                   // offset: 48
         map << model_name;                    // offset: 80
         map << custom_name;                   // offset: 112
+        map << gimbal_device_id;              // offset: 144
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
@@ -108,6 +111,7 @@ struct GIMBAL_DEVICE_INFORMATION : mavlink::Message {
         map >> vendor_name;                   // offset: 48
         map >> model_name;                    // offset: 80
         map >> custom_name;                   // offset: 112
+        map >> gimbal_device_id;              // offset: 144
     }
 };
 

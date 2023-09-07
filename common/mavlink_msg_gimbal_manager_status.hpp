@@ -21,7 +21,7 @@ struct GIMBAL_MANAGER_STATUS : mavlink::Message {
 
     uint32_t time_boot_ms; /*< [ms] Timestamp (time since system boot). */
     uint32_t flags; /*<  High level gimbal manager flags currently applied. */
-    uint8_t gimbal_device_id; /*<  Gimbal device ID that this gimbal manager is responsible for. */
+    uint8_t gimbal_device_id; /*<  Gimbal device ID that this gimbal manager is responsible for. Component ID of gimbal device (or 1-6 for non-MAVLink gimbal). */
     uint8_t primary_control_sysid; /*<  System ID of MAVLink component with primary control, 0 for none. */
     uint8_t primary_control_compid; /*<  Component ID of MAVLink component with primary control, 0 for none. */
     uint8_t secondary_control_sysid; /*<  System ID of MAVLink component with secondary control, 0 for none. */

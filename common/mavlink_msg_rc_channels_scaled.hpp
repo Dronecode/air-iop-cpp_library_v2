@@ -9,7 +9,7 @@ namespace msg {
 /**
  * @brief RC_CHANNELS_SCALED message
  *
- * The scaled values of the RC channels received: (-100%) -10000, (0%) 0, (100%) 10000. Channels that are inactive should be set to UINT16_MAX.
+ * The scaled values of the RC channels received: (-100%) -10000, (0%) 0, (100%) 10000. Channels that are inactive should be set to INT16_MAX.
  */
 struct RC_CHANNELS_SCALED : mavlink::Message {
     static constexpr msgid_t MSG_ID = 34;

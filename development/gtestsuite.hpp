@@ -94,69 +94,6 @@ TEST(development_interop, PARAM_ACK_TRANSACTION)
 }
 #endif
 
-TEST(development, MISSION_CHECKSUM)
-{
-    mavlink::mavlink_message_t msg;
-    mavlink::MsgMap map1(msg);
-    mavlink::MsgMap map2(msg);
-
-    mavlink::development::msg::MISSION_CHECKSUM packet_in{};
-    packet_in.mission_type = 17;
-    packet_in.checksum = 963497464;
-
-    mavlink::development::msg::MISSION_CHECKSUM packet1{};
-    mavlink::development::msg::MISSION_CHECKSUM packet2{};
-
-    packet1 = packet_in;
-
-    //std::cout << packet1.to_yaml() << std::endl;
-
-    packet1.serialize(map1);
-
-    mavlink::mavlink_finalize_message(&msg, 1, 1, packet1.MIN_LENGTH, packet1.LENGTH, packet1.CRC_EXTRA);
-
-    packet2.deserialize(map2);
-
-    EXPECT_EQ(packet1.mission_type, packet2.mission_type);
-    EXPECT_EQ(packet1.checksum, packet2.checksum);
-}
-
-#ifdef TEST_INTEROP
-TEST(development_interop, MISSION_CHECKSUM)
-{
-    mavlink_message_t msg;
-
-    // to get nice print
-    memset(&msg, 0, sizeof(msg));
-
-    mavlink_mission_checksum_t packet_c {
-         963497464, 17
-    };
-
-    mavlink::development::msg::MISSION_CHECKSUM packet_in{};
-    packet_in.mission_type = 17;
-    packet_in.checksum = 963497464;
-
-    mavlink::development::msg::MISSION_CHECKSUM packet2{};
-
-    mavlink_msg_mission_checksum_encode(1, 1, &msg, &packet_c);
-
-    // simulate message-handling callback
-    [&packet2](const mavlink_message_t *cmsg) {
-        MsgMap map2(cmsg);
-
-        packet2.deserialize(map2);
-    } (&msg);
-
-    EXPECT_EQ(packet_in.mission_type, packet2.mission_type);
-    EXPECT_EQ(packet_in.checksum, packet2.checksum);
-
-#ifdef PRINT_MSG
-    PRINT_MSG(msg);
-#endif
-}
-#endif
-
 TEST(development, AIRSPEED)
 {
     mavlink::mavlink_message_t msg;
@@ -837,6 +774,65 @@ TEST(development_interop, CURRENT_MODE)
     EXPECT_EQ(packet_in.standard_mode, packet2.standard_mode);
     EXPECT_EQ(packet_in.custom_mode, packet2.custom_mode);
     EXPECT_EQ(packet_in.intended_custom_mode, packet2.intended_custom_mode);
+
+#ifdef PRINT_MSG
+    PRINT_MSG(msg);
+#endif
+}
+#endif
+
+TEST(development, AVAILABLE_MODES_MONITOR)
+{
+    mavlink::mavlink_message_t msg;
+    mavlink::MsgMap map1(msg);
+    mavlink::MsgMap map2(msg);
+
+    mavlink::development::msg::AVAILABLE_MODES_MONITOR packet_in{};
+    packet_in.seq = 5;
+
+    mavlink::development::msg::AVAILABLE_MODES_MONITOR packet1{};
+    mavlink::development::msg::AVAILABLE_MODES_MONITOR packet2{};
+
+    packet1 = packet_in;
+
+    //std::cout << packet1.to_yaml() << std::endl;
+
+    packet1.serialize(map1);
+
+    mavlink::mavlink_finalize_message(&msg, 1, 1, packet1.MIN_LENGTH, packet1.LENGTH, packet1.CRC_EXTRA);
+
+    packet2.deserialize(map2);
+
+    EXPECT_EQ(packet1.seq, packet2.seq);
+}
+
+#ifdef TEST_INTEROP
+TEST(development_interop, AVAILABLE_MODES_MONITOR)
+{
+    mavlink_message_t msg;
+
+    // to get nice print
+    memset(&msg, 0, sizeof(msg));
+
+    mavlink_available_modes_monitor_t packet_c {
+         5
+    };
+
+    mavlink::development::msg::AVAILABLE_MODES_MONITOR packet_in{};
+    packet_in.seq = 5;
+
+    mavlink::development::msg::AVAILABLE_MODES_MONITOR packet2{};
+
+    mavlink_msg_available_modes_monitor_encode(1, 1, &msg, &packet_c);
+
+    // simulate message-handling callback
+    [&packet2](const mavlink_message_t *cmsg) {
+        MsgMap map2(cmsg);
+
+        packet2.deserialize(map2);
+    } (&msg);
+
+    EXPECT_EQ(packet_in.seq, packet2.seq);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);

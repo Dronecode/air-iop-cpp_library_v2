@@ -4091,6 +4091,12 @@ TEST(common, MANUAL_CONTROL)
     packet_in.enabled_extensions = 108;
     packet_in.s = 17963;
     packet_in.t = 18067;
+    packet_in.aux1 = 18171;
+    packet_in.aux2 = 18275;
+    packet_in.aux3 = 18379;
+    packet_in.aux4 = 18483;
+    packet_in.aux5 = 18587;
+    packet_in.aux6 = 18691;
 
     mavlink::common::msg::MANUAL_CONTROL packet1{};
     mavlink::common::msg::MANUAL_CONTROL packet2{};
@@ -4115,6 +4121,12 @@ TEST(common, MANUAL_CONTROL)
     EXPECT_EQ(packet1.enabled_extensions, packet2.enabled_extensions);
     EXPECT_EQ(packet1.s, packet2.s);
     EXPECT_EQ(packet1.t, packet2.t);
+    EXPECT_EQ(packet1.aux1, packet2.aux1);
+    EXPECT_EQ(packet1.aux2, packet2.aux2);
+    EXPECT_EQ(packet1.aux3, packet2.aux3);
+    EXPECT_EQ(packet1.aux4, packet2.aux4);
+    EXPECT_EQ(packet1.aux5, packet2.aux5);
+    EXPECT_EQ(packet1.aux6, packet2.aux6);
 }
 
 #ifdef TEST_INTEROP
@@ -4126,7 +4138,7 @@ TEST(common_interop, MANUAL_CONTROL)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_manual_control_t packet_c {
-         17235, 17339, 17443, 17547, 17651, 163, 17807, 108, 17963, 18067
+         17235, 17339, 17443, 17547, 17651, 163, 17807, 108, 17963, 18067, 18171, 18275, 18379, 18483, 18587, 18691
     };
 
     mavlink::common::msg::MANUAL_CONTROL packet_in{};
@@ -4140,6 +4152,12 @@ TEST(common_interop, MANUAL_CONTROL)
     packet_in.enabled_extensions = 108;
     packet_in.s = 17963;
     packet_in.t = 18067;
+    packet_in.aux1 = 18171;
+    packet_in.aux2 = 18275;
+    packet_in.aux3 = 18379;
+    packet_in.aux4 = 18483;
+    packet_in.aux5 = 18587;
+    packet_in.aux6 = 18691;
 
     mavlink::common::msg::MANUAL_CONTROL packet2{};
 
@@ -4162,6 +4180,12 @@ TEST(common_interop, MANUAL_CONTROL)
     EXPECT_EQ(packet_in.enabled_extensions, packet2.enabled_extensions);
     EXPECT_EQ(packet_in.s, packet2.s);
     EXPECT_EQ(packet_in.t, packet2.t);
+    EXPECT_EQ(packet_in.aux1, packet2.aux1);
+    EXPECT_EQ(packet_in.aux2, packet2.aux2);
+    EXPECT_EQ(packet_in.aux3, packet2.aux3);
+    EXPECT_EQ(packet_in.aux4, packet2.aux4);
+    EXPECT_EQ(packet_in.aux5, packet2.aux5);
+    EXPECT_EQ(packet_in.aux6, packet2.aux6);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);
@@ -12763,6 +12787,7 @@ TEST(common, CAMERA_INFORMATION)
     packet_in.flags = 963498504;
     packet_in.cam_definition_version = 18691;
     packet_in.cam_definition_uri = to_char_array("RSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    packet_in.gimbal_device_id = 134;
 
     mavlink::common::msg::CAMERA_INFORMATION packet1{};
     mavlink::common::msg::CAMERA_INFORMATION packet2{};
@@ -12790,6 +12815,7 @@ TEST(common, CAMERA_INFORMATION)
     EXPECT_EQ(packet1.flags, packet2.flags);
     EXPECT_EQ(packet1.cam_definition_version, packet2.cam_definition_version);
     EXPECT_EQ(packet1.cam_definition_uri, packet2.cam_definition_uri);
+    EXPECT_EQ(packet1.gimbal_device_id, packet2.gimbal_device_id);
 }
 
 #ifdef TEST_INTEROP
@@ -12801,7 +12827,7 @@ TEST(common_interop, CAMERA_INFORMATION)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_camera_information_t packet_c {
-         963497464, 963497672, 73.0, 101.0, 129.0, 963498504, 18483, 18587, 18691, { 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254 }, { 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94 }, 159, "RSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
+         963497464, 963497672, 73.0, 101.0, 129.0, 963498504, 18483, 18587, 18691, { 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254 }, { 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94 }, 159, "RSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ", 134
     };
 
     mavlink::common::msg::CAMERA_INFORMATION packet_in{};
@@ -12818,6 +12844,7 @@ TEST(common_interop, CAMERA_INFORMATION)
     packet_in.flags = 963498504;
     packet_in.cam_definition_version = 18691;
     packet_in.cam_definition_uri = to_char_array("RSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    packet_in.gimbal_device_id = 134;
 
     mavlink::common::msg::CAMERA_INFORMATION packet2{};
 
@@ -12843,6 +12870,7 @@ TEST(common_interop, CAMERA_INFORMATION)
     EXPECT_EQ(packet_in.flags, packet2.flags);
     EXPECT_EQ(packet_in.cam_definition_version, packet2.cam_definition_version);
     EXPECT_EQ(packet_in.cam_definition_uri, packet2.cam_definition_uri);
+    EXPECT_EQ(packet_in.gimbal_device_id, packet2.gimbal_device_id);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);
@@ -14347,6 +14375,7 @@ TEST(common, GIMBAL_DEVICE_INFORMATION)
     packet_in.pitch_max = 241.0;
     packet_in.yaw_min = 269.0;
     packet_in.yaw_max = 297.0;
+    packet_in.gimbal_device_id = 181;
 
     mavlink::common::msg::GIMBAL_DEVICE_INFORMATION packet1{};
     mavlink::common::msg::GIMBAL_DEVICE_INFORMATION packet2{};
@@ -14376,6 +14405,7 @@ TEST(common, GIMBAL_DEVICE_INFORMATION)
     EXPECT_EQ(packet1.pitch_max, packet2.pitch_max);
     EXPECT_EQ(packet1.yaw_min, packet2.yaw_min);
     EXPECT_EQ(packet1.yaw_max, packet2.yaw_max);
+    EXPECT_EQ(packet1.gimbal_device_id, packet2.gimbal_device_id);
 }
 
 #ifdef TEST_INTEROP
@@ -14387,7 +14417,7 @@ TEST(common_interop, GIMBAL_DEVICE_INFORMATION)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_gimbal_device_information_t packet_c {
-         93372036854775807ULL, 963497880, 963498088, 963498296, 157.0, 185.0, 213.0, 241.0, 269.0, 297.0, 19523, 19627, "WXYZABCDEFGHIJKLMNOPQRSTUVWXYZA", "CDEFGHIJKLMNOPQRSTUVWXYZABCDEFG", "IJKLMNOPQRSTUVWXYZABCDEFGHIJKLM"
+         93372036854775807ULL, 963497880, 963498088, 963498296, 157.0, 185.0, 213.0, 241.0, 269.0, 297.0, 19523, 19627, "WXYZABCDEFGHIJKLMNOPQRSTUVWXYZA", "CDEFGHIJKLMNOPQRSTUVWXYZABCDEFG", "IJKLMNOPQRSTUVWXYZABCDEFGHIJKLM", 181
     };
 
     mavlink::common::msg::GIMBAL_DEVICE_INFORMATION packet_in{};
@@ -14406,6 +14436,7 @@ TEST(common_interop, GIMBAL_DEVICE_INFORMATION)
     packet_in.pitch_max = 241.0;
     packet_in.yaw_min = 269.0;
     packet_in.yaw_max = 297.0;
+    packet_in.gimbal_device_id = 181;
 
     mavlink::common::msg::GIMBAL_DEVICE_INFORMATION packet2{};
 
@@ -14433,6 +14464,7 @@ TEST(common_interop, GIMBAL_DEVICE_INFORMATION)
     EXPECT_EQ(packet_in.pitch_max, packet2.pitch_max);
     EXPECT_EQ(packet_in.yaw_min, packet2.yaw_min);
     EXPECT_EQ(packet_in.yaw_max, packet2.yaw_max);
+    EXPECT_EQ(packet_in.gimbal_device_id, packet2.gimbal_device_id);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);
@@ -14541,6 +14573,7 @@ TEST(common, GIMBAL_DEVICE_ATTITUDE_STATUS)
     packet_in.failure_flags = 963499128;
     packet_in.delta_yaw = 297.0;
     packet_in.delta_yaw_velocity = 325.0;
+    packet_in.gimbal_device_id = 149;
 
     mavlink::common::msg::GIMBAL_DEVICE_ATTITUDE_STATUS packet1{};
     mavlink::common::msg::GIMBAL_DEVICE_ATTITUDE_STATUS packet2{};
@@ -14566,6 +14599,7 @@ TEST(common, GIMBAL_DEVICE_ATTITUDE_STATUS)
     EXPECT_EQ(packet1.failure_flags, packet2.failure_flags);
     EXPECT_EQ(packet1.delta_yaw, packet2.delta_yaw);
     EXPECT_EQ(packet1.delta_yaw_velocity, packet2.delta_yaw_velocity);
+    EXPECT_EQ(packet1.gimbal_device_id, packet2.gimbal_device_id);
 }
 
 #ifdef TEST_INTEROP
@@ -14577,7 +14611,7 @@ TEST(common_interop, GIMBAL_DEVICE_ATTITUDE_STATUS)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_gimbal_device_attitude_status_t packet_c {
-         963497464, { 45.0, 46.0, 47.0, 48.0 }, 157.0, 185.0, 213.0, 963499128, 19107, 247, 58, 297.0, 325.0
+         963497464, { 45.0, 46.0, 47.0, 48.0 }, 157.0, 185.0, 213.0, 963499128, 19107, 247, 58, 297.0, 325.0, 149
     };
 
     mavlink::common::msg::GIMBAL_DEVICE_ATTITUDE_STATUS packet_in{};
@@ -14592,6 +14626,7 @@ TEST(common_interop, GIMBAL_DEVICE_ATTITUDE_STATUS)
     packet_in.failure_flags = 963499128;
     packet_in.delta_yaw = 297.0;
     packet_in.delta_yaw_velocity = 325.0;
+    packet_in.gimbal_device_id = 149;
 
     mavlink::common::msg::GIMBAL_DEVICE_ATTITUDE_STATUS packet2{};
 
@@ -14615,6 +14650,7 @@ TEST(common_interop, GIMBAL_DEVICE_ATTITUDE_STATUS)
     EXPECT_EQ(packet_in.failure_flags, packet2.failure_flags);
     EXPECT_EQ(packet_in.delta_yaw, packet2.delta_yaw);
     EXPECT_EQ(packet_in.delta_yaw_velocity, packet2.delta_yaw_velocity);
+    EXPECT_EQ(packet_in.gimbal_device_id, packet2.gimbal_device_id);
 
 #ifdef PRINT_MSG
     PRINT_MSG(msg);

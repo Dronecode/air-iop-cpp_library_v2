@@ -21,7 +21,7 @@ struct GIMBAL_MANAGER_INFORMATION : mavlink::Message {
 
     uint32_t time_boot_ms; /*< [ms] Timestamp (time since system boot). */
     uint32_t cap_flags; /*<  Bitmap of gimbal capability flags. */
-    uint8_t gimbal_device_id; /*<  Gimbal device ID that this gimbal manager is responsible for. */
+    uint8_t gimbal_device_id; /*<  Gimbal device ID that this gimbal manager is responsible for. Component ID of gimbal device (or 1-6 for non-MAVLink gimbal). */
     float roll_min; /*< [rad] Minimum hardware roll angle (positive: rolling to the right, negative: rolling to the left) */
     float roll_max; /*< [rad] Maximum hardware roll angle (positive: rolling to the right, negative: rolling to the left) */
     float pitch_min; /*< [rad] Minimum pitch angle (positive: up, negative: down) */

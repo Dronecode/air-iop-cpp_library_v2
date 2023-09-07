@@ -23,7 +23,7 @@ struct SET_ATTITUDE_TARGET : mavlink::Message {
     uint8_t target_system; /*<  System ID */
     uint8_t target_component; /*<  Component ID */
     uint8_t type_mask; /*<  Bitmap to indicate which dimensions should be ignored by the vehicle. */
-    std::array<float, 4> q; /*<  Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) */
+    std::array<float, 4> q; /*<  Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) from MAV_FRAME_LOCAL_NED to MAV_FRAME_BODY_FRD */
     float body_roll_rate; /*< [rad/s] Body roll rate */
     float body_pitch_rate; /*< [rad/s] Body pitch rate */
     float body_yaw_rate; /*< [rad/s] Body yaw rate */
